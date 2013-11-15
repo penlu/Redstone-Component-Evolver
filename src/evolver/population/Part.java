@@ -3,7 +3,9 @@
  * and open the template in the editor.
  */
 
-package RedstoneEvolver;
+package evolver.population;
+
+import evolver.main.Randomizer;
 
 /**
  *

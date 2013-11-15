@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package RedstoneEvolver;
+package evolver.genome;
 
+import evolver.main.Randomizer;
 import java.util.*;
 
 /**

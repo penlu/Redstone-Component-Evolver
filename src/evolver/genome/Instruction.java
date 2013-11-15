@@ -3,7 +3,10 @@
  * and open the template in the editor.
  */
 
-package RedstoneEvolver;
+package evolver.genome;
+
+import evolver.population.Part;
+import evolver.main.Randomizer;
 
 /**
  * Single genetic instruction; specifies a part and direction to move after part placement.
