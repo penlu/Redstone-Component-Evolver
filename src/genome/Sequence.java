@@ -8,6 +8,6 @@ package genome;
  *
  * @author Eric Lu <penlume@gmail.com>
  */
-public class LGenome {
+public class Sequence {
     // TODO: port
 }
