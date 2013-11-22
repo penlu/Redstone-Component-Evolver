@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package evolver.main;
+package evolver;
 
 import java.util.*;
 

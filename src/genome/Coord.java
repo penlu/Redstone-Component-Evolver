@@ -3,9 +3,9 @@
  * and open the template in the editor.
  */
 
-package evolver.genome;
+package genome;
 
-import evolver.main.Randomizer;
+import evolver.Randomizer;
 
 /**
  *

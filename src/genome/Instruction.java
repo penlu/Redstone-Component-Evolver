@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 
-package evolver.genome;
+package genome;
 
-import evolver.population.Part;
-import evolver.main.Randomizer;
+import population.Part;
+import evolver.Randomizer;
 
 /**
  * Single genetic instruction; specifies a part and direction to move after part placement.
@@ -17,7 +17,7 @@ public class Instruction {
     private Coord dir; // direction to move after placement
 
     private boolean subjump; // is this instruction a subroutine jump?
-    private Genome subroutine; // reference to subroutine contained by this instruction
+    private LGenome subroutine; // reference to subroutine contained by this instruction
 
     public static Instruction getRandomInstruction() {
         return new Instruction(Part.getRandomPart(), Coord.getRandomCardinal());
@@ -29,7 +29,7 @@ public class Instruction {
         this.dir = dir;
     }
 
-    public Instruction(Genome subroutine) { // construct an instruction holding a subroutine
+    public Instruction(LGenome subroutine) { // construct an instruction holding a subroutine
         subjump = true;
         this.subroutine = subroutine;
     }
@@ -46,7 +46,7 @@ public class Instruction {
         return subjump;
     }
 
-    public Genome getSubroutine() {
+    public LGenome getSubroutine() {
         return subroutine;
     }
 

@@ -3,9 +3,9 @@
  * and open the template in the editor.
  */
 
-package evolver.genome;
+package genome;
 
-import evolver.main.Randomizer;
+import evolver.Randomizer;
 import java.util.*;
 
 /**
@@ -14,7 +14,7 @@ import java.util.*;
  *
  * @author Access
  */
-public class Genome {
+public class LGenome {
     private static enum Mutation {
         POINT, INSERTION, DELETION, DUPLICATION, SUBSTITUTION, FACTORIZATION;
 
@@ -25,19 +25,19 @@ public class Genome {
 
     private ArrayList<Instruction> insts; // list of instructions
 
-    private ArrayList<Genome> subroutines; // list of subroutines referenced by this genome
+    private ArrayList<LGenome> subroutines; // list of subroutines referenced by this genome
 
     /**
      * Generates a random genome of length n
      * @param n
      */
-    public Genome(int n) {
+    public LGenome(int n) {
         insts = new ArrayList<Instruction>(n);
         for (int i = 0; i < n; i++) {
             insts.set(i, Instruction.getRandomInstruction());
         }
 
-        subroutines = new ArrayList<Genome>();
+        subroutines = new ArrayList<LGenome>();
     }
 
     /**
@@ -53,7 +53,7 @@ public class Genome {
      */
     public int instCount() {
         int total = length();
-        for (Genome subroutine : subroutines) {
+        for (LGenome subroutine : subroutines) {
             total += subroutine.instCount();
         }
 
@@ -89,8 +89,8 @@ public class Genome {
      * probably good for crossover reproduction
      * @return
      */
-    public Genome[] getSubroutines() {
-        Genome[] subroutineList = new Genome[subroutines.size()];
+    public LGenome[] getSubroutines() {
+        LGenome[] subroutineList = new LGenome[subroutines.size()];
         for (int i = 0; i < subroutines.size(); i++) {
             subroutineList[i] = subroutines.get(i);
         }
@@ -176,11 +176,11 @@ public class Genome {
 
     // TODO implement quick and easy instruction insert/removal/substring operations
 
-    public Genome replicate() {
+    public LGenome replicate() {
 
     }
 
-    public Genome crossover(Genome partner) {
+    public LGenome crossover(LGenome partner) {
 
     }
 }

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package evolver.genome;
+package genome;
 
 /**
  * Returns the instructions of a genome in sequence.  Transparently accounts for subroutines.
