@@ -5,6 +5,7 @@
 package genome;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides manipulation utilities for a string of integer "bases".
@@ -24,8 +25,8 @@ public class Sequence {
      * Create a sequence from a list of bases.
      * @param b 
      */
-    private Sequence(ArrayList<Integer> b) {
-        bases = (ArrayList<Integer>)b.clone();
+    private Sequence(List<Integer> b) {
+        bases = new ArrayList<Integer>(b);
     }
     
     public int length() {
@@ -54,19 +55,10 @@ public class Sequence {
      * indices in the range [begin, end).
      * @param begin
      * @param end
-     * @return null if indexes out of range
+     * @return
      */
     public Sequence subsequence(int begin, int end) {
-        if (begin < 0 || begin > this.length() || end < 0 || end > this.length())
-            return null;
-        
-        // 
-        ArrayList<Integer> subbases = new ArrayList<Integer>(end - begin);
-        for (int i = begin; i < end; i++) {
-            subbases.add(bases.get(i));
-        }
-        
-        return new Sequence(subbases);
+        return new Sequence(bases.subList(begin, end));
     }
     
     /**
@@ -97,11 +89,10 @@ public class Sequence {
      * Inserts a specified subsequence at the given index.
      * @param s
      * @param i
-     * @return resulting subsequence or null if failure
+     * @return
      */
     public Sequence insert(Sequence s, int i) {
-        if (i > this.length()) return null;
-        
+        ArrayList<Integer> seqcopy = (ArrayList<Integer>)bases.clone();
         
     }
 }
