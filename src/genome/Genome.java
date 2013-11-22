@@ -4,7 +4,7 @@
  */
 package genome;
 
-import evolver.population.Phenotype;
+import evaluation.Phenotype;
 
 /**
  *
