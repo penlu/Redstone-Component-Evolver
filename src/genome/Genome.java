@@ -19,6 +19,11 @@ public class Genome {
     Sequence axiom; // starting axiom for intertype translation
     ArrayList<ArrayList<Rule>> batches; // list of batches of rules
     
+    public Genome() {
+        axiom = new Sequence();
+        batches = new ArrayList<ArrayList<Rule>>();
+    }
+    
     /**
     * Randomly generates a new genome.
     * @param s a rough measure of the complexity of the genome to generate
@@ -53,8 +58,18 @@ public class Genome {
     * @return 
     */
     public Phenotype toPhenotype() {
-        // TODO
-        return new Phenotype();
+        // translate axiom to final intertype
+        Sequence inter = axiom.copy();
+        for (int i = 0; i < batches.size(); i++) {
+            ArrayList<Rule> batch = batches.get(i);
+            Sequence mask = new Sequence(inter.bases.size());
+            for (int j = 0; j < batch.size(); j++) {
+                batch.get(j).applyRule(inter, mask);
+            }
+        }
+        
+        // convert intertype sequence to phenotype
+        return EnderTurtle.process(inter);
     }
     
     /**

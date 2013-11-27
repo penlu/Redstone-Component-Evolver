@@ -20,6 +20,17 @@ public class Sequence {
         bases = new ArrayList<Integer>();
     }
     
+    /**
+     * Create a new sequence of specified length filled with 0.
+     * Useful for generating new update masks.
+     */
+    public Sequence(int l) {
+        bases = new ArrayList<Integer>(l);
+        for (int i = 0; i < l; i++) {
+            bases.add(0);
+        }
+    }
+    
     private Sequence(ArrayList<Integer> b) {
         bases = (ArrayList<Integer>)b.clone();
     }
