@@ -20,14 +20,16 @@ public class Sequence {
         bases = new ArrayList<Integer>();
     }
     
+    private Sequence(ArrayList<Integer> b) {
+        bases = (ArrayList<Integer>)b.clone();
+    }
+    
     /**
      * Produces a copy of this sequence
      * @return 
      */
     public Sequence copy() {
-        Sequence s = new Sequence();
-        s.bases = (ArrayList<Integer>)bases.clone();
-        return s;
+        return new Sequence(bases);
     }
     
     /**
@@ -38,9 +40,7 @@ public class Sequence {
      * @return
      */
     public Sequence subsequence(int begin, int end) {
-        Sequence s = new Sequence();
-        s.bases = (ArrayList<Integer>)bases.subList(begin, end);
-        return s;
+        return new Sequence((ArrayList<Integer>)bases.subList(begin, end));
     }
     
     /**
@@ -73,15 +73,17 @@ public class Sequence {
      * Inserts a single base at the given index.
      * @param b
      * @param i
-     * @return whether insertion was successful
+     * @return sequence with the insertion performed, or this sequence if 
+     *         the insertion was unsuccessful
      */
-    public boolean insert(int b, int i) {
+    public Sequence insert(int b, int i) {
         if (i < 0 || i > bases.size()) {
-            return false;
+            return this;
         }
         
-        bases.add(i, b);
-        return true;
+        ArrayList<Integer> newbases = (ArrayList<Integer>)bases.clone();
+        newbases.add(i, b);
+        return new Sequence(newbases);
     }
     
     /**
@@ -90,14 +92,15 @@ public class Sequence {
      * @param i
      * @return whether the insertion was successful
      */
-    public boolean insert(Sequence s, int i) {
+    public Sequence insert(Sequence s, int i) {
         if (i < 0 || i > bases.size()) {
-            return false;
+            return this;
         }
         
         // add bases
-        bases.addAll(i, s.bases);
-        return true;
+        ArrayList<Integer> newbases = (ArrayList<Integer>)bases.clone();
+        newbases.addAll(i, s.bases);
+        return new Sequence(newbases);
     }
     
     /**
@@ -125,11 +128,11 @@ public class Sequence {
         s.bases = (ArrayList<Integer>)bases.subList(i, i + n);
         
         // remove elements
+        ArrayList<Integer> newbases = (ArrayList<Integer>)bases.clone();
         for (int x = 0; x < n; x++) {
-            bases.remove(i);
+            newbases.remove(i);
         }
         
-        
-        return s;
+        return new Sequence(newbases);
     }
 }
