@@ -86,4 +86,12 @@ public class Coord implements Comparable<Coord> {
         
         return 0;
     }
+    
+    public boolean equals(Object c) {
+        if (!(c instanceof Coord)) {
+            return false;
+        }
+        
+        return x == ((Coord)c).x && y == ((Coord)c).y && z == ((Coord)c).z;
+    }
 }

@@ -22,19 +22,33 @@ public class Genome {
     }
     
     /**
+     * Creates a copy of this genome.
+     * @return 
+     */
+    public static Genome copy() {
+        // TODO
+        return new Genome();
+    }
+    
+    /**
     * Translates this genome into a phenotype.
     * @param g
     * @return 
     */
-    public Phenotype toPhenotype();
-    
+    public Phenotype toPhenotype() {
+        // TODO
+        return new Phenotype();
+    }
     
     /**
      * Performs some mutation on this genome.
      * @param g
      * @return
      */
-    public Genome mutate();
+    public Genome mutate() {
+        // TODO
+        return copy();
+    }
     
     /**
      * Crosses two genomes over to produce some offspring.
@@ -44,5 +58,8 @@ public class Genome {
      * @param g
      * @return
      */
-    public Genome crossover(Genome g);
+    public Genome crossover(Genome g) {
+        // TODO
+        return copy();
+    }
 }

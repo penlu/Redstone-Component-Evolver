@@ -22,10 +22,10 @@ import java.util.TreeMap;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Phenotype {
-    TreeMap<Coord, Block> contents = new TreeMap<Coord, Block>();
+    private TreeMap<Coord, Block> contents;
     
     public Phenotype() {
-        
+        contents = new TreeMap<Coord, Block>();
     }
     
     /**
