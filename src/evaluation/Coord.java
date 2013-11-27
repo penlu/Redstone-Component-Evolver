@@ -10,12 +10,10 @@ package evaluation;
  * 
  * @author Eric Lu <penlume@gmail.com>
  */
-public class Coord {
-    private int[] xyz;
-    
-    public Coord() {
-        xyz = new int[3];
-    }
+public class Coord implements Comparable<Coord> {
+    int x;
+    int y;
+    int z;
     
     /**
      * Creates a new coord from the given x, y, z parameters.
@@ -24,42 +22,9 @@ public class Coord {
      * @param z 
      */
     public Coord(int x, int y, int z) {
-        xyz = new int[3];
-        xyz[0] = x;
-        xyz[1] = y;
-        xyz[2] = z;
-    }
-    
-    /**
-     * Creates coordinates from the array of parameters given.
-     * @param arr 
-     */
-    public Coord(int[] arr) {
-        xyz = new int[3];
-        for (int i = 0; i < 3; i++) {
-            xyz[i] = arr[i];
-        }
-    }
-    
-    /**
-     * Gets the ith element of this coordinate.
-     * @param i
-     * @return 
-     */
-    public int e(int i) {
-        return xyz[i];
-    }
-    
-    public int x() {
-        return xyz[0];
-    }
-    
-    public int y() {
-        return xyz[1];
-    }
-    
-    public int z() {
-        return xyz[2];
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
     
     /**
@@ -68,21 +33,11 @@ public class Coord {
      * @return 
      */
     public Coord add(Coord a) {
-        int[] newXYZ = new int[3];
-        for (int i = 0; i < 3; i++) {
-            newXYZ[i] = xyz[i] + a.e(i);
-        }
-        
-        return new Coord(newXYZ);
+        return new Coord(x + a.x, y + a.y, z + a.z);
     }
     
     public Coord sub(Coord a) {
-        int[] newXYZ = new int[3];
-        for (int i = 0; i < 3; i++) {
-            newXYZ[i] = xyz[i] - a.e(i);
-        }
-        
-        return new Coord(newXYZ);
+        return new Coord(x - a.x, y - a.y, z - a.z);
     }
     
     /**
@@ -110,5 +65,25 @@ public class Coord {
             default:
                 return new Coord(0, 0, 0);
         }
+    }
+    
+    public int compareTo(Coord c) {
+        if (x < c.x) {
+            return -4;
+        } else if (x > c.x) {
+            return 4;
+        }
+        if (y < c.y) {
+            return -2;
+        } else if (y > c.y) {
+            return 2;
+        }
+        if (z < c.z) {
+            return -1;
+        } else if (z > c.z) {
+            return 1;
+        }
+        
+        return 0;
     }
 }

@@ -4,6 +4,8 @@
  */
 package evaluation;
 
+import java.util.TreeMap;
+
 /**
  * Defines the data structure to store the phenotype.
  * 
@@ -14,9 +16,18 @@ package evaluation;
  * Data structure representing an arrangement of redstone components in the 
  * Minecraft environment.
  * 
+ * This implementation uses a TreeMap to store its contents!
+ * NOTE may require profiling.
+ * 
  * @author Eric Lu <penlume@gmail.com>
  */
-public interface Phenotype {
+public class Phenotype {
+    TreeMap<Coord, Block> contents = new TreeMap<Coord, Block>();
+    
+    public Phenotype() {
+        
+    }
+    
     /**
      * Defines enum variable specifying the type of block a certain part is.
      */
@@ -41,12 +52,23 @@ public interface Phenotype {
      * @param c
      * @param b 
      */
-    void setBlock(Coord c, Block b);
+    public void setBlock(Coord c, Block b) {
+        contents.put(c, b);
+    }
     
     /**
      * Get block at specified location.
      * @param c
-     * @return 
+     * @return empty block full of AIR if no block currently specified there
      */
-    Block getBlock(Coord c);
+    public Block getBlock(Coord c) {
+        Block b = contents.get(c);
+        if (b == null) {
+            b = new Block();
+            b.id = BlockID.AIR;
+            b.data = 0;
+        }
+        
+        return b;
+    }
 }

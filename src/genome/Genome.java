@@ -10,7 +10,17 @@ import evaluation.Phenotype;
  *
  * @author Eric Lu <penlume@gmail.com>
  */
-public interface Genome {
+public class Genome {
+    /**
+    * Randomly generates a new genome.
+    * @param s a rough measure of the complexity of the genome to generate
+    * @return 
+    */
+    public static Genome gen(int s) {
+        // TODO
+        return new Genome();
+    }
+    
     /**
     * Translates this genome into a phenotype.
     * @param g
@@ -18,12 +28,6 @@ public interface Genome {
     */
     public Phenotype toPhenotype();
     
-    /**
-    * Randomly generates a new genome.
-    * @param s a rough measure of the complexity of the genome to generate
-    * @return 
-    */
-    public Genome gen(int s);
     
     /**
      * Performs some mutation on this genome.
