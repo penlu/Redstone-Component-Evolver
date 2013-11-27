@@ -73,17 +73,15 @@ public class Sequence {
      * Inserts a single base at the given index.
      * @param b
      * @param i
-     * @return sequence with the insertion performed, or this sequence if 
-     *         the insertion was unsuccessful
+     * @return whether insertion was successful
      */
-    public Sequence insert(int b, int i) {
+    public boolean insert(int b, int i) {
         if (i < 0 || i > bases.size()) {
-            return this;
+            return false;
         }
         
-        ArrayList<Integer> newbases = (ArrayList<Integer>)bases.clone();
-        newbases.add(i, b);
-        return new Sequence(newbases);
+        bases.add(i, b);
+        return true;
     }
     
     /**
@@ -92,15 +90,14 @@ public class Sequence {
      * @param i
      * @return whether the insertion was successful
      */
-    public Sequence insert(Sequence s, int i) {
+    public boolean insert(Sequence s, int i) {
         if (i < 0 || i > bases.size()) {
-            return this;
+            return false;
         }
         
         // add bases
-        ArrayList<Integer> newbases = (ArrayList<Integer>)bases.clone();
-        newbases.addAll(i, s.bases);
-        return new Sequence(newbases);
+        bases.addAll(i, s.bases);
+        return true;
     }
     
     /**
@@ -128,11 +125,10 @@ public class Sequence {
         s.bases = (ArrayList<Integer>)bases.subList(i, i + n);
         
         // remove elements
-        ArrayList<Integer> newbases = (ArrayList<Integer>)bases.clone();
         for (int x = 0; x < n; x++) {
-            newbases.remove(i);
+            bases.remove(i);
         }
         
-        return new Sequence(newbases);
+        return s;
     }
 }

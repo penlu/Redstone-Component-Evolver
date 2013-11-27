@@ -5,12 +5,20 @@
 package genome;
 
 import evaluation.Phenotype;
+import java.util.ArrayList;
 
 /**
- *
+ * Contains methods for a genotype representation.
+ * 
+ * This implementation does an L-system genome, so it stores a starting axiom 
+ * and a list of batches of rules to apply.
+ * 
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Genome {
+    Sequence axiom; // starting axiom for intertype translation
+    ArrayList<ArrayList<Rule>> batches; // list of batches of rules
+    
     /**
     * Randomly generates a new genome.
     * @param s a rough measure of the complexity of the genome to generate
