@@ -33,9 +33,18 @@ public class Genome {
      * Creates a copy of this genome.
      * @return 
      */
-    public static Genome copy() {
-        // TODO
-        return new Genome();
+    public Genome copy() {
+        Genome g = new Genome();
+        g.axiom = axiom.copy();
+        g.batches = new ArrayList<ArrayList<Rule>>(batches.size());
+        for (int i = 0; i < batches.size(); i++) {
+            g.batches.add(i, new ArrayList<Rule>(batches.get(i).size()));
+            for (int j = 0; j < batches.get(i).size(); i++) {
+                g.batches.get(i).add(j, batches.get(i).get(j).copy());
+            }
+        }
+        
+        return g;
     }
     
     /**

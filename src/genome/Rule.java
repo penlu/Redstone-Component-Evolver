@@ -9,5 +9,15 @@ package genome;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Rule {
-    // TODO: port
+    Sequence lhs;
+    Sequence rhs;
+    
+    public Rule(Sequence lhs, Sequence rhs) {
+        this.lhs = lhs;
+        this.rhs = rhs;
+    }
+    
+    public Rule copy() {
+        return new Rule(lhs.copy(), rhs.copy());
+    }
 }
