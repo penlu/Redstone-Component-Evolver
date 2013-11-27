@@ -36,7 +36,7 @@ public class Genome {
     
     /**
      * Creates a copy of this genome.
-     * @return 
+     * @return deep copy of this genome
      */
     public Genome copy() {
         Genome g = new Genome();
