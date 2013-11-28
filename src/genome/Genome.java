@@ -62,7 +62,7 @@ public class Genome {
         Sequence inter = axiom.copy();
         for (int i = 0; i < batches.size(); i++) {
             ArrayList<Rule> batch = batches.get(i);
-            Sequence mask = new Sequence(inter.bases.size());
+            Sequence mask = new Sequence(inter.bases.size(), 0);
             for (int j = 0; j < batch.size(); j++) {
                 batch.get(j).apply(inter, mask);
             }

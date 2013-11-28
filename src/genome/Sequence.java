@@ -21,13 +21,13 @@ public class Sequence {
     }
     
     /**
-     * Create a new sequence of specified length filled with 0.
+     * Create a new sequence of specified length filled with specified contents.
      * Useful for generating new update masks.
      */
-    public Sequence(int l) {
+    public Sequence(int l, int c) {
         bases = new ArrayList<Integer>(l);
         for (int i = 0; i < l; i++) {
-            bases.add(0);
+            bases.add(c);
         }
     }
     
