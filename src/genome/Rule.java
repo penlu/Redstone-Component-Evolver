@@ -4,6 +4,8 @@
  */
 package genome;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Eric Lu <penlume@gmail.com>
@@ -28,7 +30,11 @@ public class Rule {
      * @param s sequence to modify
      * @param mask edit forbiddence mask
      */
-    public void applyRule(Sequence s, Sequence mask) {
-        // TODO
+    public void apply(Sequence s, Sequence mask) {
+        // find every match in sequence
+        ArrayList<Integer> matches = new ArrayList<Integer>();
+        for (int i = 0; i < s.bases.size() - lhs.bases.size(); i++) {
+            
+        }
     }
 }

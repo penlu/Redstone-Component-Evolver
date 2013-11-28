@@ -64,7 +64,7 @@ public class Genome {
             ArrayList<Rule> batch = batches.get(i);
             Sequence mask = new Sequence(inter.bases.size());
             for (int j = 0; j < batch.size(); j++) {
-                batch.get(j).applyRule(inter, mask);
+                batch.get(j).apply(inter, mask);
             }
         }
         
