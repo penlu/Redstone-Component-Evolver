@@ -50,25 +50,29 @@ public class Rule {
                 // remove this match if overlapping nonzero mask value
                 if (mask.bases.get(matches.get(i) + j) != 0) {
                     matches.remove(i);
-                    i--; // back up to not skip values
+                    i--; // back up to avoid skipping values
                     break;
                 }
             }
         }
         
         // remove overlapping matches
-        // go backwards so continuous overlaps don't delete all values
-        for (int i = matches.size() - 2; i >= 0; i--) {
-            if (matches.get(i) + lhs.bases.size() > matches.get(i + 1)) {
-                matches.remove(i);
-                i++; // back up to not skip values
-                break;
+        for (int i = 0; i < matches.size() - 1; i++) {
+            // strip out matches before end of current match
+            for (int j = i + 1; matches.get(j) < matches.get(i) + lhs.bases.size(); j++) {
+                matches.remove(j);
+                j--; // back up to avoid skipping values
             }
         }
         
         // apply at remaining locations; modify mask
         for (int i = matches.size() - 1; i >= 0; i--) { // we go backwards to avoid index fuckery
+            s.remove(i, lhs.bases.size());
+            s.insert(rhs, i);
             
+            // modify mask
+            mask.remove(i, lhs.bases.size());
+            s.insert(new Sequence(rhs.bases.size(), 1), i);
         }
     }
 }
