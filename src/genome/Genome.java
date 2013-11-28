@@ -72,20 +72,52 @@ public class Genome {
         return EnderTurtle.process(inter);
     }
     
+    private void modify(Rule r) {
+        
+    }
+    
     /**
-     * Performs some mutation on this genome.
+     * Performs some mutation on this genome.  One of the following:
+     *  - axiom modification
+     *  - rule modification
+     * 
+     *  - rule substitution/factorization
+     * 
+     *  - rule deletion
+     *  - rule duplication
+     *  - rule order changing
+     *  - rule batch changing
+     * 
+     *  - batch splitting
+     *  - batch merging
+     * 
+     * Modification encompasses one of:
+     *  - single base insertion/deletion
+     *  - run insertion/deletion/duplication/reversal
+     * 
      * @param g
      * @return
      */
-    public Genome mutate() {
-        // TODO
+    public Genome mutate() { // TODO
+        // weighted mutation probabilities!
+        double rand = Math.random();
+        if (rand < 0.85) {
+            // pick a rule/axiom to modify
+            ArrayList<Rule> batch = batches.get((int)(Math.random() * batches.size()));
+            Rule r = batch.get((int)(Math.random() * batch.size()));
+            
+            modify(r);
+        } else {
+            // do a batch-level modification
+        }
+        
         return copy();
     }
     
     /**
      * Crosses two genomes over to produce some offspring.
      * 
-     * Does not apply mutations.
+     * Does not apply mutations to the result.
      * @param f
      * @param g
      * @return
