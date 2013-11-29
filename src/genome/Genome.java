@@ -72,7 +72,7 @@ public class Genome {
         return EnderTurtle.process(inter);
     }
     
-    private void modify(Rule r) {
+    private void modify(Sequence s) {
         
     }
     
@@ -103,12 +103,19 @@ public class Genome {
         double rand = Math.random();
         if (rand < 0.85) {
             // pick a rule/axiom to modify
-            ArrayList<Rule> batch = batches.get((int)(Math.random() * batches.size()));
-            Rule r = batch.get((int)(Math.random() * batch.size()));
+            // build list of sequences in this genome
+            ArrayList<Sequence> seqs = new ArrayList<Sequence>();
+            seqs.add(axiom);
+            for (int i = 0; i < batches.size(); i++) {
+                for (int j = 0; j < batches.get(i).size(); j++) {
+                    seqs.add(batches.get(i).get(j).lhs);
+                    seqs.add(batches.get(i).get(j).rhs);
+                }
+            }
             
-            modify(r);
+            modify(seqs.get((int)(Math.random() * seqs.size())));
         } else {
-            // do a batch-level modification
+            // TODO do a batch-level modification
         }
         
         return copy();
