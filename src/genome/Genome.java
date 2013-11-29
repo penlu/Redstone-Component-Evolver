@@ -77,7 +77,14 @@ public class Genome {
     }
     
     /**
-     * Performs some mutation on this genome.  One of the following:
+     * Performs one mutation cycle on this genome.
+     * A set of mutations is applied with specified probability for each 
+     * mutation.
+     * Physically, one mutation cycle represents the state of the genome after 
+     * some fixed amount of time for which the probability of certain mutations 
+     * occurring is specified.
+     * 
+     * Mutations may be one of the following:
      *  - axiom modification
      *  - rule modification
      * 
@@ -100,22 +107,44 @@ public class Genome {
      */
     public Genome mutate() { // TODO
         // weighted mutation probabilities!
-        double rand = Math.random();
-        if (rand < 0.85) {
-            // pick a rule/axiom to modify
-            // build list of sequences in this genome
-            ArrayList<Sequence> seqs = new ArrayList<Sequence>();
-            seqs.add(axiom);
+        if (Math.random() < 0.9) {
+            // select a rule / modify the axiom
+            
+            // aggregating rules
+            ArrayList<Rule> rules = new ArrayList<Rule>();
+            // super hacky backtrack solution
+            ArrayList<Integer> batchnums = new ArrayList<Integer>();
+            ArrayList<Integer> batchindex = new ArrayList<Integer>();
             for (int i = 0; i < batches.size(); i++) {
                 for (int j = 0; j < batches.get(i).size(); j++) {
-                    seqs.add(batches.get(i).get(j).lhs);
-                    seqs.add(batches.get(i).get(j).rhs);
+                    rules.add(batches.get(i).get(j));
+                    batchnums.add(i);
+                    batchindex.add(j);
                 }
             }
             
-            modify(seqs.get((int)(Math.random() * seqs.size())));
-        } else {
-            // TODO do a batch-level modification
+            int sel = (int)(Math.random() * (rules.size() + 1));
+            if (sel == rules.size()) {
+                // modify axiom
+                modify(axiom);
+            } else {
+                Rule r = rules.get(sel);
+                // modify indexed rule
+                if (Math.random() < 0.3) {
+                    // modify lhs
+                    modify(r.lhs);
+                    if (r.lhs.bases.isEmpty()) { // remove rule!
+                        // hacky solution
+                        batches.get(batchnums.get(sel)).remove((int)batchindex.get(sel));
+                    }
+                } else {
+                    // modify rhs
+                    modify(r.rhs);
+                }
+            }
+        }
+        if (Math.random() < 0.1) {
+            // TODO batch-level modification
         }
         
         return copy();
