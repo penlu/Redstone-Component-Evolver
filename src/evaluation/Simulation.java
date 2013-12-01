@@ -4,6 +4,8 @@
  */
 package evaluation;
 
+import java.util.ArrayList;
+
 /**
  * Simulates a Phenotype as it would transpire in the Minecraft world.
  * 
@@ -15,17 +17,31 @@ package evaluation;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Simulation {
+    private ArrayList<Coord> elements;
+    private ArrayList<Coord> inputs;
+    private ArrayList<Coord> outputs;
+    
     /**
      * Construct a simulation for the given phenotype.
      * @param p 
      */
     public Simulation(Phenotype p) {
-        // TODO preprocessing!!
+        // preprocessing!!
+        
+        // convert to 3D array...
+        
+        // get active elements (torches, repeaters, pistons, comparators...)
+        elements = p.getElements();
+        
+        // get inputs
+        inputs = p.getInputs();
+        
+        // get outputs
+        outputs = p.getOutputs();
     }
     
     public int countInputs() {
-        // TODO return input count!
-        return 0;
+        return inputs.size();
     }
     
     public void step(boolean[] inputs) {

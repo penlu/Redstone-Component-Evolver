@@ -4,6 +4,8 @@
  */
 package evaluation;
 
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -22,7 +24,10 @@ import java.util.TreeMap;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Phenotype {
-    private TreeMap<Coord, Block> contents;
+    private TreeMap<Coord, Block> contents; // all blocks in this device
+    
+    private ArrayList<Coord> inputs;
+    private ArrayList<Coord> outputs;
     
     public Phenotype() {
         contents = new TreeMap<Coord, Block>();
@@ -70,5 +75,22 @@ public class Phenotype {
         }
         
         return b;
+    }
+    
+    /**
+     * Get list of locations of active elements.
+     * 
+     * This includes torches, repeaters, pistons, comparators...
+     * @return list of locations of active elements
+     */
+    public ArrayList<Coord> getElements() {
+        ArrayList<Coord> locs = new ArrayList<Coord>();
+        for (Map.Entry<Coord, Block> entry : contents.entrySet()) {
+            if (entry.getValue().id == BlockID.TORCH) {
+                locs.add(entry.getKey());
+            }
+        }
+        
+        return locs;
     }
 }

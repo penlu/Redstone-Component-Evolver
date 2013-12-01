@@ -73,16 +73,11 @@ public class Genome {
     }
     
     private void modify(Sequence s) {
-        
+        // TODO!
     }
     
     /**
-     * Performs one mutation cycle on this genome.
-     * A set of mutations is applied with specified probability for each 
-     * mutation.
-     * Physically, one mutation cycle represents the state of the genome after 
-     * some fixed amount of time for which the probability of certain mutations 
-     * occurring is specified.
+     * Performs some mutation on this genome.
      * 
      * Mutations may be one of the following:
      *  - axiom modification
@@ -105,7 +100,7 @@ public class Genome {
      * @param g
      * @return
      */
-    public Genome mutate() { // TODO
+    public void mutate() { // TODO
         // weighted mutation probabilities!
         if (Math.random() < 0.9) {
             // select a rule / modify the axiom
@@ -142,12 +137,22 @@ public class Genome {
                     modify(r.rhs);
                 }
             }
-        }
-        if (Math.random() < 0.1) {
+        } else {
             // TODO batch-level modification
+            double op = Math.random();
+            if (op < 0.2) {
+                // perform a substitution
+                
+            } else if (op < 0.4) {
+                // delete a rule
+            } else if (op < 0.6) {
+                // duplicate a rule
+            } else if (op < 0.8) {
+                // switch two rules
+            } else {
+                // move a rule to another batch
+            }
         }
-        
-        return copy();
     }
     
     /**
