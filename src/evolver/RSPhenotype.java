@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package evaluation;
+package evolver;
 
+import evaluation.Coord;
 import evolver.Phenotype;
 import java.util.ArrayList;
 import java.util.Map;

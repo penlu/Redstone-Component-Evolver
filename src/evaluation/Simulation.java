@@ -4,6 +4,7 @@
  */
 package evaluation;
 
+import evolver.RSPhenotype;
 import java.util.ArrayList;
 
 /**

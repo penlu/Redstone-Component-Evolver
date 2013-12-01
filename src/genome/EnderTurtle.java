@@ -4,6 +4,7 @@
  */
 package genome;
 
+import evolver.RSPhenotype;
 import evaluation.*;
 
 /**

@@ -4,7 +4,7 @@
  */
 package genome;
 
-import evaluation.RSPhenotype;
+import evolver.RSPhenotype;
 import java.util.ArrayList;
 
 /**
@@ -15,8 +15,7 @@ import java.util.ArrayList;
  * 
  * @author Eric Lu <penlume@gmail.com>
  */
-public class RSLGenome implements Genome<RSPhenotype>,
-                                  Crossable<RSPhenotype, RSLGenome> {
+public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     Sequence axiom; // starting axiom for intertype translation
     ArrayList<ArrayList<Rule>> batches; // list of batches of rules
     
