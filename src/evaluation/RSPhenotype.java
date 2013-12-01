@@ -4,6 +4,7 @@
  */
 package evaluation;
 
+import evolver.Phenotype;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -23,7 +24,7 @@ import java.util.TreeMap;
  * 
  * @author Eric Lu <penlume@gmail.com>
  */
-public class Phenotype {
+public class RSPhenotype implements Phenotype {
     private TreeMap<Coord, Block> contents; // all blocks in this device
     
     private ArrayList<Coord> elements;
@@ -35,7 +36,7 @@ public class Phenotype {
      * @param s sequence program to run
      * @return phenotype constructed from sequence
      */
-    public Phenotype(ArrayList<Integer> bases) {
+    public RSPhenotype(ArrayList<Integer> bases) {
         // TODO! processssss
         
         contents = new TreeMap<Coord, Block>();
@@ -65,9 +66,14 @@ public class Phenotype {
      * Data structure storing information about a single block.
      */
     public static class Block {
-        BlockID id; // the type of part this is
-        int data;   // extra data in bit-flags
-                    // (direction and settings for most objects)
+        public final BlockID id; // the type of part this is
+        public final int data;   // extra data in bit-flags
+                                 // (direction and settings for most objects)
+        
+        public Block(BlockID id, int data) {
+            this.id = id;
+            this.data = data;
+        }
     }
     
     /**
@@ -98,9 +104,7 @@ public class Phenotype {
     public Block getBlock(Coord c) {
         Block b = contents.get(c);
         if (b == null) {
-            b = new Block();
-            b.id = BlockID.AIR;
-            b.data = 0;
+            b = new Block(BlockID.AIR, 0);
         }
         
         return b;

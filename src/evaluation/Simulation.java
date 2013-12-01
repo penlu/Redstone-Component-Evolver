@@ -7,7 +7,7 @@ package evaluation;
 import java.util.ArrayList;
 
 /**
- * Simulates a Phenotype as it would transpire in the Minecraft world.
+ * Simulates a RSPhenotype as it would transpire in the Minecraft world.
  * 
  * This implementation pre-processes to find dynamic elements for better update 
  * ticking efficiency.  Also finds inputs/outputs and provides methods that 
@@ -25,10 +25,10 @@ public class Simulation {
      * Construct a simulation for the given phenotype.
      * @param p 
      */
-    public Simulation(Phenotype p) {
-        // preprocessing!!
+    public Simulation(RSPhenotype p) { // TODO preprocessing!
+        // convert phenotype contents to 3D state array
+        // find space bounds
         
-        // convert to 3D array...
         
         // get active elements (torches, repeaters, pistons, comparators...)
         elements = p.getElements();
