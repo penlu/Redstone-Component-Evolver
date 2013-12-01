@@ -29,15 +29,26 @@ public class Phenotype {
     private ArrayList<Coord> elements;
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
-    
+
     /**
-     * Blank phenotype (why)
+     * Process a sequence, running it as a program to construct a new phenotype.
+     * @param s sequence program to run
+     * @return phenotype constructed from sequence
      */
-    public Phenotype() {
+    public Phenotype(ArrayList<Integer> bases) {
+        // TODO! processssss
+        
         contents = new TreeMap<Coord, Block>();
-        elements = new ArrayList<Coord>();
+        
         inputs = new ArrayList<Coord>();
         outputs = new ArrayList<Coord>();
+        
+        elements = new ArrayList<Coord>();
+        for (Map.Entry<Coord, Block> entry : contents.entrySet()) {
+            if (entry.getValue().id == BlockID.TORCH) {
+                elements.add(entry.getKey());
+            }
+        }
     }
     
     /**
@@ -59,10 +70,6 @@ public class Phenotype {
                     // (direction and settings for most objects)
     }
     
-    public Phenotype(ArrayList<Integer> bases) {
-        
-    }
-    
     /**
      * Set block at specified location.
      * @param c
@@ -81,14 +88,6 @@ public class Phenotype {
                 i--; // don't skip
             }
         }
-    }
-    
-    public ArrayList<Coord> getInputs() {
-        return inputs;
-    }
-    
-    public ArrayList<Coord> getOutputs() {
-        return outputs;
     }
     
     /**
@@ -113,14 +112,15 @@ public class Phenotype {
      * This includes torches, repeaters, pistons, comparators...
      * @return list of locations of active elements
      */
-    private ArrayList<Coord> getElements() {
-        ArrayList<Coord> locs = new ArrayList<Coord>();
-        for (Map.Entry<Coord, Block> entry : contents.entrySet()) {
-            if (entry.getValue().id == BlockID.TORCH) {
-                locs.add(entry.getKey());
-            }
-        }
-        
-        return locs;
+    public ArrayList<Coord> getElements() {
+        return elements;
+    }
+    
+    public ArrayList<Coord> getInputs() {
+        return inputs;
+    }
+    
+    public ArrayList<Coord> getOutputs() {
+        return outputs;
     }
 }

@@ -18,6 +18,6 @@ public class EnderTurtle {
      */
     public static Phenotype process(Sequence s) {
         // TODO
-        return new Phenotype();
+        return null;
     }
 }
