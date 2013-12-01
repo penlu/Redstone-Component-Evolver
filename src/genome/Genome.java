@@ -69,7 +69,7 @@ public class Genome {
         }
         
         // convert intertype sequence to phenotype
-        return EnderTurtle.process(inter);
+        return new Phenotype(inter.bases);
     }
     
     private void modify(Sequence s) {

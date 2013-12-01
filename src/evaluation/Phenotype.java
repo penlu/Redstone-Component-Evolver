@@ -26,11 +26,18 @@ import java.util.TreeMap;
 public class Phenotype {
     private TreeMap<Coord, Block> contents; // all blocks in this device
     
+    private ArrayList<Coord> elements;
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
     
+    /**
+     * Blank phenotype (why)
+     */
     public Phenotype() {
         contents = new TreeMap<Coord, Block>();
+        elements = new ArrayList<Coord>();
+        inputs = new ArrayList<Coord>();
+        outputs = new ArrayList<Coord>();
     }
     
     /**
@@ -52,13 +59,36 @@ public class Phenotype {
                     // (direction and settings for most objects)
     }
     
+    public Phenotype(ArrayList<Integer> bases) {
+        
+    }
+    
     /**
      * Set block at specified location.
      * @param c
      * @param b 
      */
-    public void setBlock(Coord c, Block b) {
+    private void setBlock(Coord c, Block b) {
         contents.put(c, b);
+        
+        // clear inputs/outputs
+        for (int i = 0; i < inputs.size(); i++) {
+            if (inputs.get(i).equals(c)) {
+                inputs.remove(i);
+                i--; // don't skip
+            } else if (outputs.get(i).equals(c)) {
+                outputs.remove(i);
+                i--; // don't skip
+            }
+        }
+    }
+    
+    public ArrayList<Coord> getInputs() {
+        return inputs;
+    }
+    
+    public ArrayList<Coord> getOutputs() {
+        return outputs;
     }
     
     /**
@@ -83,7 +113,7 @@ public class Phenotype {
      * This includes torches, repeaters, pistons, comparators...
      * @return list of locations of active elements
      */
-    public ArrayList<Coord> getElements() {
+    private ArrayList<Coord> getElements() {
         ArrayList<Coord> locs = new ArrayList<Coord>();
         for (Map.Entry<Coord, Block> entry : contents.entrySet()) {
             if (entry.getValue().id == BlockID.TORCH) {
