@@ -11,10 +11,10 @@ import java.util.ArrayList;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Rule {
-    public final Sequence<Base> lhs;
-    public final Sequence<Base> rhs;
+    public final Sequence<LBase> lhs;
+    public final Sequence<LBase> rhs;
     
-    public Rule(Sequence<Base> lhs, Sequence<Base> rhs) {
+    public Rule(Sequence<LBase> lhs, Sequence<LBase> rhs) {
         this.lhs = lhs;
         this.rhs = rhs;
     }
@@ -30,7 +30,7 @@ public class Rule {
      * @param s sequence to modify
      * @param mask edit forbiddence mask
      */
-    public void apply(Sequence<Base> s, Sequence<Integer> mask) {
+    public void apply(Sequence<LBase> s, Sequence<Integer> mask) {
         // ensure non-degenerate case
         if (lhs.elements.isEmpty()) {
             return;

@@ -23,4 +23,14 @@ public class Block {
         this.id = id;
         this.data = data;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Block)) {
+            return false;
+        }
+        
+        Block b = (Block)o;
+        return b.id == id && b.data == data;
+    }
 }

@@ -52,7 +52,7 @@ public class Sequence<E> {
      * @return
      */
     public Sequence subsequence(int begin, int end) {
-        return new Sequence((ArrayList<Base>)elements.subList(begin, end));
+        return new Sequence((ArrayList<LBase>)elements.subList(begin, end));
     }
     
     /**
