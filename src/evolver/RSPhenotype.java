@@ -5,7 +5,6 @@
 package evolver;
 
 import evaluation.Coord;
-import evolver.Phenotype;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -28,7 +27,6 @@ import java.util.TreeMap;
 public class RSPhenotype implements Phenotype {
     private TreeMap<Coord, Block> contents; // all blocks in this device
     
-    private ArrayList<Coord> elements;
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
 
@@ -97,6 +95,28 @@ public class RSPhenotype implements Phenotype {
         }
     }
     
+    public Coord getMinBound() {
+        // TODO
+        return new Coord(0, 0, 0);
+    }
+    
+    public Coord getMaxBound() {
+        // TODO
+        return new Coord(0, 0, 0);
+    }
+    
+    /**
+     * Gets the volume of this redstone component.
+     * 
+     * Volume is defined as the number of voxels within one unit (including 
+     * diagonals) of a non-air block in this component.
+     * @return 
+     */
+    public int getVolume() {
+        // TODO
+        return 0;
+    }
+    
     /**
      * Get block at specified location.
      * @param c
@@ -109,16 +129,6 @@ public class RSPhenotype implements Phenotype {
         }
         
         return b;
-    }
-    
-    /**
-     * Get list of locations of active elements.
-     * 
-     * This includes torches, repeaters, pistons, comparators...
-     * @return list of locations of active elements
-     */
-    public ArrayList<Coord> getElements() {
-        return elements;
     }
     
     public ArrayList<Coord> getInputs() {
