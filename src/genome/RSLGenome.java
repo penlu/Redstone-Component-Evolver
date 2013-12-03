@@ -16,11 +16,11 @@ import java.util.ArrayList;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
-    Sequence axiom; // starting axiom for intertype translation
+    Sequence<Base> axiom; // starting axiom for intertype translation
     ArrayList<ArrayList<Rule>> batches; // list of batches of rules
     
     public RSLGenome() {
-        axiom = new Sequence();
+        axiom = new Sequence<Base>();
         batches = new ArrayList<ArrayList<Rule>>();
     }
     
@@ -57,20 +57,20 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     */
     public RSPhenotype toPhenotype() {
         // translate axiom to final intertype
-        Sequence inter = axiom.copy();
+        Sequence<Base> inter = axiom.copy();
         for (int i = 0; i < batches.size(); i++) {
             ArrayList<Rule> batch = batches.get(i);
-            Sequence mask = new Sequence(inter.bases.size(), 0);
+            Sequence<Integer> mask = new Sequence(inter.elements.size(), 0);
             for (int j = 0; j < batch.size(); j++) {
                 batch.get(j).apply(inter, mask);
             }
         }
         
         // convert intertype sequence to phenotype
-        return new RSPhenotype(inter.bases);
+        return EnderTurtle.process(inter);
     }
     
-    private void modify(Sequence s) {
+    private void modify(Sequence<Base> s) {
         // TODO!
     }
     
@@ -126,7 +126,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 if (Math.random() < 0.3) {
                     // modify lhs
                     modify(r.lhs);
-                    if (r.lhs.bases.isEmpty()) { // remove rule!
+                    if (r.lhs.elements.isEmpty()) { // remove rule!
                         // hacky solution
                         batches.get(batchnums.get(sel)).remove((int)batchindex.get(sel));
                     }

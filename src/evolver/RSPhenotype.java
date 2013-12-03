@@ -26,7 +26,7 @@ import java.util.TreeMap;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class RSPhenotype implements Phenotype {
-    private Block[][][] contents; // all blocks in this device
+    private TreeMap<Coord, Block> contents; // all blocks in this device
     
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
@@ -36,22 +36,14 @@ public class RSPhenotype implements Phenotype {
      * @param s sequence program to run
      * @return phenotype constructed from sequence
      */
-    public RSPhenotype(TreeMap<Coord, Block> partlist) {
-        // TODO! processssss
+    public RSPhenotype(Map<Coord, Block> partlist,
+                       ArrayList<Coord> inputs, ArrayList<Coord> outputs) {
         
-        TreeMap<Coord, Block> partlist = new TreeMap<Coord, Block>();
+        contents = new TreeMap<Coord, Block>(partlist);
+        // TODO convert to array
         
-        inputs = new ArrayList<Coord>();
-        outputs = new ArrayList<Coord>();
-        
-        
-        
-        elements = new ArrayList<Coord>();
-        for (Map.Entry<Coord, Block> entry : contents.entrySet()) {
-            if (entry.getValue().id == BlockID.TORCH) {
-                elements.add(entry.getKey());
-            }
-        }
+        this.inputs = inputs;
+        this.outputs = outputs;
     }
     
     /**
@@ -104,7 +96,7 @@ public class RSPhenotype implements Phenotype {
     public Block getBlock(Coord c) {
         Block b = contents.get(c);
         if (b == null) {
-            b = new Block(BlockID.AIR, 0);
+            b = new Block(Block.BlockID.AIR, 0);
         }
         
         return b;

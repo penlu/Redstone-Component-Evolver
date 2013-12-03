@@ -30,10 +30,6 @@ public class Simulation {
         // convert phenotype contents to 3D state array
         // find space bounds
         
-        
-        // get active elements (torches, repeaters, pistons, comparators...)
-        elements = p.getElements();
-        
         // get inputs
         inputs = p.getInputs();
         
