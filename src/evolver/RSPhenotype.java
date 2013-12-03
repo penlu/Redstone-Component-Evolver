@@ -5,6 +5,7 @@
 package evolver;
 
 import evaluation.Coord;
+import evaluation.Block;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -25,7 +26,7 @@ import java.util.TreeMap;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class RSPhenotype implements Phenotype {
-    private TreeMap<Coord, Block> contents; // all blocks in this device
+    private Block[][][] contents; // all blocks in this device
     
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
@@ -35,43 +36,21 @@ public class RSPhenotype implements Phenotype {
      * @param s sequence program to run
      * @return phenotype constructed from sequence
      */
-    public RSPhenotype(ArrayList<Integer> bases) {
+    public RSPhenotype(TreeMap<Coord, Block> partlist) {
         // TODO! processssss
         
-        contents = new TreeMap<Coord, Block>();
+        TreeMap<Coord, Block> partlist = new TreeMap<Coord, Block>();
         
         inputs = new ArrayList<Coord>();
         outputs = new ArrayList<Coord>();
+        
+        
         
         elements = new ArrayList<Coord>();
         for (Map.Entry<Coord, Block> entry : contents.entrySet()) {
             if (entry.getValue().id == BlockID.TORCH) {
                 elements.add(entry.getKey());
             }
-        }
-    }
-    
-    /**
-     * Defines enum variable specifying the type of block a certain part is.
-     */
-    public static enum BlockID {
-        AIR,    // empty space
-        WIRE,   // redstone wire
-        TORCH,  // redstone torch
-        BLOCK;  // normal block
-    }
-    
-    /**
-     * Data structure storing information about a single block.
-     */
-    public static class Block {
-        public final BlockID id; // the type of part this is
-        public final int data;   // extra data in bit-flags
-                                 // (direction and settings for most objects)
-        
-        public Block(BlockID id, int data) {
-            this.id = id;
-            this.data = data;
         }
     }
     
