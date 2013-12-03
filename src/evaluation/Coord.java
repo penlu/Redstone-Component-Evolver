@@ -11,9 +11,9 @@ package evaluation;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Coord implements Comparable<Coord> {
-    int x;
-    int y;
-    int z;
+    public final int x;
+    public final int y;
+    public final int z;
     
     /**
      * Creates a new coord from the given x, y, z parameters.
@@ -25,6 +25,15 @@ public class Coord implements Comparable<Coord> {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+    
+    /**
+     * Copies a coord from another's elements
+     */
+    public Coord(Coord c) {
+        this.x = c.x;
+        this.y = c.y;
+        this.z = c.z;
     }
     
     /**

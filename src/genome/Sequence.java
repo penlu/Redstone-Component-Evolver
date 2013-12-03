@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class Sequence<E> {
     ArrayList<E> elements; // list of elements in this sequence
+    // TODO access modifier?
     
     /**
      * Create a new empty sequence.

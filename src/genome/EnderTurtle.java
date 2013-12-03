@@ -16,7 +16,7 @@ public class EnderTurtle {
      * @param s sequence program to run
      * @return phenotype constructed from sequence
      */
-    public static RSPhenotype process(Sequence s) {
+    public static RSPhenotype process(Sequence<Base> s) {
         // TODO
         return null;
     }

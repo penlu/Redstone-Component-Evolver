@@ -8,7 +8,6 @@ import evaluation.Coord;
 import evaluation.Block;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Defines the data structure to store the phenotype.
@@ -26,7 +25,8 @@ import java.util.TreeMap;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class RSPhenotype implements Phenotype {
-    private TreeMap<Coord, Block> contents; // all blocks in this device
+    private Block[][][] contents; // all blocks in this device
+    private Coord zero; // virtual coordinates of zero index in contents array
     
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
@@ -39,41 +39,55 @@ public class RSPhenotype implements Phenotype {
     public RSPhenotype(Map<Coord, Block> partlist,
                        ArrayList<Coord> inputs, ArrayList<Coord> outputs) {
         
-        contents = new TreeMap<Coord, Block>(partlist);
-        // TODO convert to array
+        // find part position bounds
+        Coord min = new Coord(partlist.entrySet().iterator().next().getKey());
+        Coord max = new Coord(partlist.entrySet().iterator().next().getKey());
+        for (Map.Entry<Coord, Block> entry : partlist.entrySet()) {
+            // track min coord
+            if (entry.getKey().x < min.x) {
+                min = new Coord(entry.getKey().x, min.y, min.z);
+            }
+            if (entry.getKey().y < min.y) {
+                min = new Coord(min.x, entry.getKey().y, min.z);
+            }
+            if (entry.getKey().z < min.z) {
+                min = new Coord(min.x, min.y, entry.getKey().z);
+            }
+            
+            // track max coord
+            if (entry.getKey().x > max.x) {
+                max = new Coord(entry.getKey().x, max.y, max.z);
+            }
+            if (entry.getKey().y > max.y) {
+                max = new Coord(max.x, entry.getKey().y, max.z);
+            }
+            if (entry.getKey().z > max.z) {
+                max = new Coord(max.x, max.y, entry.getKey().z);
+            }
+        }
+        
+        // copy parts into array
+        contents = new Block[max.x - min.x][max.y - min.y][max.z - min.z];
+        for (Map.Entry<Coord, Block> entry : partlist.entrySet()) {
+            Coord index = entry.getKey().sub(min);
+            contents[index.x][index.y][index.z] = entry.getValue();
+        }
+        
+        // store coordinates represented by zero index
+        zero = min;
         
         this.inputs = inputs;
         this.outputs = outputs;
     }
     
-    /**
-     * Set block at specified location.
-     * @param c
-     * @param b 
-     */
-    private void setBlock(Coord c, Block b) {
-        contents.put(c, b);
-        
-        // clear inputs/outputs
-        for (int i = 0; i < inputs.size(); i++) {
-            if (inputs.get(i).equals(c)) {
-                inputs.remove(i);
-                i--; // don't skip
-            } else if (outputs.get(i).equals(c)) {
-                outputs.remove(i);
-                i--; // don't skip
-            }
-        }
-    }
-    
     public Coord getMinBound() {
-        // TODO
-        return new Coord(0, 0, 0);
+        return zero;
     }
     
     public Coord getMaxBound() {
-        // TODO
-        return new Coord(0, 0, 0);
+        return zero.add(new Coord(contents.length,
+                                  contents[0].length,
+                                  contents[0][0].length));
     }
     
     /**
@@ -94,9 +108,15 @@ public class RSPhenotype implements Phenotype {
      * @return empty block full of AIR if no block currently specified there
      */
     public Block getBlock(Coord c) {
-        Block b = contents.get(c);
-        if (b == null) {
+        Coord index = c.sub(zero);
+        
+        Block b;
+        if (index.x < 0 || index.x > contents.length
+         || index.y < 0 || index.y > contents.length
+         || index.z < 0 || index.z > contents.length) {
             b = new Block(Block.BlockID.AIR, 0);
+        } else {
+            b = contents[index.x][index.y][index.z];
         }
         
         return b;

@@ -11,8 +11,8 @@ import java.util.ArrayList;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Rule {
-    Sequence<Base> lhs;
-    Sequence<Base> rhs;
+    public final Sequence<Base> lhs;
+    public final Sequence<Base> rhs;
     
     public Rule(Sequence<Base> lhs, Sequence<Base> rhs) {
         this.lhs = lhs;
