@@ -18,7 +18,11 @@ import java.util.ArrayList;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Simulation {
-    private ArrayList<Coord> elements;
+    private int[][][] state; // current state of the component
+    private Coord zero; // virtual location of the zero index
+    
+    private ArrayList<Coord> scheduled; // components scheduled for updates
+    
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
     
@@ -27,14 +31,33 @@ public class Simulation {
      * @param p 
      */
     public Simulation(RSPhenotype p) { // TODO preprocessing!
-        // convert phenotype contents to 3D state array
-        // find space bounds
+        // produce 3D state array
+        zero = p.getMinBound();
+        Coord size = p.getMaxBound().sub(zero);
+        state = new int[size.x][size.y][size.z];
         
-        // get inputs
+        // schedule components for first update
+        for (int i = 0; i < size.x; i++) {
+            for (int j = 0; j < size.y; j++) {
+                for (int k = 0; k < size.z; k++) {
+                    Coord loc = new Coord(i, j, k).add(zero);
+                    if (Block.BlockID.isComponent(
+                            p.getBlock(loc).id)) {
+                        scheduled.add(loc);
+                    }
+                }
+            }
+        }
+        
+        // store inputs
         inputs = p.getInputs();
         
-        // get outputs
+        // store outputs
         outputs = p.getOutputs();
+    }
+    
+    public void updateComponents() {
+        // TODO update scheduled components
     }
     
     public int countInputs() {
@@ -44,6 +67,12 @@ public class Simulation {
     public void step(boolean[] inputs) {
         // TODO simulate one step with given inputs!
         // or previous inputs if the input here is null
+        
+        // update scheduled components, propagating
+        
+        // set inputs, propagating
+        
+        // reschedule
     }
     
     public boolean[] outputs() {

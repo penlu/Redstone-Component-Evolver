@@ -17,6 +17,14 @@ public class Block {
         WIRE,   // redstone wire
         TORCH,  // redstone torch
         BLOCK;  // normal block
+        
+        public static boolean isComponent(BlockID id) {
+            if (id == TORCH) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     public Block(BlockID id, int data) {

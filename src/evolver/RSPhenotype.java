@@ -76,6 +76,8 @@ public class RSPhenotype implements Phenotype {
         // store coordinates represented by zero index
         zero = min;
         
+        // TODO try shifting ALL of the coordinates!
+        
         this.inputs = inputs;
         this.outputs = outputs;
     }

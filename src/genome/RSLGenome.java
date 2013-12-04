@@ -72,6 +72,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     
     private void modify(Sequence<LBase> s) {
         // TODO!
+        // literally the only thing that makes sense is to delegate the modifications to the Sequence class
     }
     
     /**
