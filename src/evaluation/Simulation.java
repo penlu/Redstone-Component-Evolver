@@ -23,8 +23,10 @@ public class Simulation {
     private RSPhenotype phenotype; // definitions of blocks in component
     private BlockState[][][] state; // current state of blocks in component
     private Coord zero; // virtual location of the zero index
+    // TODO this zero bullshit seems unnecessary. fix phenotype so it stops being a thing.
     
     private ArrayList<Coord> scheduled; // components scheduled for updates
+                                        // make no mistake this stores their indices!
     
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
@@ -35,8 +37,7 @@ public class Simulation {
      */
     public Simulation(RSPhenotype p) {
         // coordinate frame calculations
-        zero = p.getMinBound();
-        Coord size = p.getMaxBound().sub(zero);
+        Coord size = p.getSize();
         
         // initialize containers
         state = new BlockState[size.x][size.y][size.z];
@@ -53,7 +54,7 @@ public class Simulation {
                     // schedule components
                     if (Block.BlockID.isSchedulable(
                             p.getBlock(loc).id)) {
-                        scheduled.add(loc);
+                        scheduled.add(new Coord(i, j, k));
                     }
                 }
             }
@@ -77,6 +78,8 @@ public class Simulation {
      */
     public void step(boolean[] inputs) {
         // TODO
+        
+        
         
         // update by scheduled updates
         

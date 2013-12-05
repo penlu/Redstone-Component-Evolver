@@ -21,7 +21,6 @@ import java.util.Map;
  */
 public class RSPhenotype implements Phenotype {
     private Block[][][] contents; // all blocks in this device
-    private Coord zero; // virtual coordinates of zero index in contents array
     
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
@@ -68,23 +67,21 @@ public class RSPhenotype implements Phenotype {
             contents[index.x][index.y][index.z] = entry.getValue();
         }
         
-        // store coordinates represented by zero index
-        zero = min;
-        
-        // TODO try shifting ALL of the coordinates!
-        
-        this.inputs = inputs;
-        this.outputs = outputs;
+        // shift input and output coords to match indices
+        this.inputs = new ArrayList<Coord>();
+        this.outputs = new ArrayList<Coord>();
+        for (int i = 0; i < inputs.size(); i++) {
+            this.inputs.add(inputs.get(i).sub(min));
+        }
+        for (int i = 0; i < outputs.size(); i++) {
+            this.outputs.add(outputs.get(i).sub(min));
+        }
     }
     
-    public Coord getMinBound() {
-        return zero;
-    }
-    
-    public Coord getMaxBound() {
-        return zero.add(new Coord(contents.length,
-                                  contents[0].length,
-                                  contents[0][0].length));
+    public Coord getSize() {
+        return new Coord(contents.length,
+                         contents[0].length,
+                         contents[0][0].length));
     }
     
     /**
@@ -105,15 +102,13 @@ public class RSPhenotype implements Phenotype {
      * @return empty block full of AIR if no block currently specified there
      */
     public Block getBlock(Coord c) {
-        Coord index = c.sub(zero);
-        
         Block b;
-        if (index.x < 0 || index.x > contents.length
-         || index.y < 0 || index.y > contents.length
-         || index.z < 0 || index.z > contents.length) {
+        if (c.x < 0 || c.x > contents.length
+         || c.y < 0 || c.y > contents[0].length
+         || c.z < 0 || c.z > contents[0][0].length) {
             b = new Block(Block.BlockID.AIR, 0);
         } else {
-            b = contents[index.x][index.y][index.z];
+            b = contents[c.x][c.y][c.z];
         }
         
         return b;
