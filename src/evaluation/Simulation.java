@@ -158,10 +158,12 @@ public class Simulation {
             Coord loc = outputs.get(i);
             
             // see if output is receiving power from neighboring squares
-            int maxpow = 0; // get maximum power
+            int maxpow = 0; // prepare to get maximum received power
             for (int dir = 0; dir < 5; dir++) {
                 Coord adj = loc.sub(new Coord(dir));
-                int pow = state[adj.x][adj.y][adj.z].weakPower(dir);
+                BlockState neighbor = state[adj.x][adj.y][adj.z];
+                int pow = Math.max(neighbor.weakPower(dir),
+                                   neighbor.strongPower(dir));
                 if (pow > maxpow) {
                     maxpow = pow;
                 }
