@@ -45,6 +45,41 @@ public class Block {
     }
     
     /**
+     * For blocks that must be mounted on another block.
+     * @return relative location of required mount, or null if none
+     */
+    public Coord needsMount() {
+        if (id == BlockID.WIRE) {
+            return new Coord(0, -1, 0);
+        } else if (id == BlockID.TORCH) {
+            // torches: data stores the direction the torch is pointing...
+            if (data == 1) { // pointing +x
+                return new Coord(-1, 0, 0);
+            } else if (data == 2) { // pointing +z
+                return new Coord(0, 0, -1);
+            } else if (data == 3) { // pointing -x
+                return new Coord(1, 0, 0);
+            } else if (data == 4) { // pointing -z
+                return new Coord(0, 0, 1);
+            } else if (data == 5) { // pointing +y up
+                return new Coord(0, -1, 0);
+            } else {
+                return new Coord(0, 0, 0);
+            }
+        } else {
+            return null;
+        }
+    }
+    
+    public boolean canMount() {
+        if (id == BlockID.BLOCK) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
      * @return a BlockState that can be used to simulate this object
      */
     public BlockState initState() { // TODO!!

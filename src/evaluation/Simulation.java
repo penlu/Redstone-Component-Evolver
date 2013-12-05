@@ -157,13 +157,17 @@ public class Simulation {
         for (int i = 0; i < outputs.size(); i++) {
             Coord loc = outputs.get(i);
             
-            vals[i] = state[loc.x][loc.y][loc.z].weakPower(0);
-            for (int j = 1; i < 6; i++) {
-                int power = state[loc.x][loc.y][loc.z].weakPower(j);
-                if (power > vals[i]) {
-                    vals[i] = power;
+            // see if output is receiving power from neighboring squares
+            int maxpow = 0; // get maximum power
+            for (int dir = 0; dir < 5; dir++) {
+                Coord adj = loc.sub(new Coord(dir));
+                int pow = state[adj.x][adj.y][adj.z].weakPower(dir);
+                if (pow > maxpow) {
+                    maxpow = pow;
                 }
             }
+            
+            vals[i] = maxpow;
         }
         
         return vals;

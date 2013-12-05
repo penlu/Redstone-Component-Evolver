@@ -7,7 +7,7 @@ package genome;
 import java.util.ArrayList;
 
 /**
- *
+ * Stores a transformation rule.
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Rule {

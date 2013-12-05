@@ -8,6 +8,7 @@ import evolver.Block;
 import evolver.Coord;
 import evolver.RSPhenotype;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -26,14 +27,30 @@ public class EnderTurtle {
         
         Coord pos = new Coord(0, 0, 0);
         
+        // follow the given instructions
         for (int i = 0; i < bases.size(); i++) {
             parts.put(pos, bases.get(i).block);
             pos = pos.add(new Coord(bases.get(i).move));
         }
         
-        // TODO stack/destack? add input/output? pattern-matching these??
+        // TODO input, output, stack, destack...?? modify Rule and Sequence!
         
-        // TODO somehow fix non-sensible blocks
+        // fix blocks that need to be attached to something
+        for (Map.Entry<Coord, Block> entry : parts.entrySet()) {
+            Coord mount = entry.getValue().needsMount();
+            
+            // check if mount missing
+            Coord mountpos = entry.getKey().add(mount);
+            if (mount != null && !parts.get(mountpos).canMount()) {
+                if (parts.get(entry.getKey()).id == Block.BlockID.AIR) {
+                    // if air space, fill
+                    parts.put(mountpos, new Block(Block.BlockID.BLOCK, 0));
+                } else {
+                    // delete this block
+                    parts.put(entry.getKey(), new Block(Block.BlockID.AIR, 0));
+                }
+            }
+        }
         
         return new RSPhenotype(parts, new ArrayList<Coord>(), new ArrayList<Coord>());
     }
