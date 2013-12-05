@@ -150,14 +150,20 @@ public class Simulation {
     
     /**
      * Get outputs.
-     * @return TODO make the outputs weak power strengths
+     * @return maximum output produced by each output block to an adjacent collector wire
      */
-    public boolean[] outputs() {
-        boolean[] vals = new boolean[outputs.size()];
+    public int[] outputs() {
+        int[] vals = new int[outputs.size()];
         for (int i = 0; i < outputs.size(); i++) {
             Coord loc = outputs.get(i);
             
-            vals[i] = state[loc.x][loc.y][loc.z].indirectPower();
+            vals[i] = state[loc.x][loc.y][loc.z].weakPower(0);
+            for (int j = 1; i < 6; i++) {
+                int power = state[loc.x][loc.y][loc.z].weakPower(j);
+                if (power > vals[i]) {
+                    vals[i] = power;
+                }
+            }
         }
         
         return vals;
