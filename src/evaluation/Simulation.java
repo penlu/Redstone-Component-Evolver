@@ -21,7 +21,9 @@ public class Simulation {
     private int[][][] state; // current state of the component
     private Coord zero; // virtual location of the zero index
     
+    // update scheduling
     private ArrayList<Coord> scheduled; // components scheduled for updates
+    private ArrayList<Integer> schedpower; // power at update scheduling
     
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
@@ -30,13 +32,14 @@ public class Simulation {
      * Construct a simulation for the given phenotype.
      * @param p 
      */
-    public Simulation(RSPhenotype p) { // TODO preprocessing!
+    public Simulation(RSPhenotype p) {
         // produce 3D state array
         zero = p.getMinBound();
         Coord size = p.getMaxBound().sub(zero);
         state = new int[size.x][size.y][size.z];
         
         // schedule components for first update
+        scheduled = new ArrayList<Coord>();
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 for (int k = 0; k < size.z; k++) {
@@ -44,6 +47,7 @@ public class Simulation {
                     if (Block.BlockID.isComponent(
                             p.getBlock(loc).id)) {
                         scheduled.add(loc);
+                        schedpower.add(0);
                     }
                 }
             }
@@ -56,27 +60,54 @@ public class Simulation {
         outputs = p.getOutputs();
     }
     
-    public void updateComponents() {
-        // TODO update scheduled components
-    }
-    
     public int countInputs() {
         return inputs.size();
     }
     
-    public void step(boolean[] inputs) {
-        // TODO simulate one step with given inputs!
-        // or previous inputs if the input here is null
+    /**
+     * Schedule element at coordinate c to be updated with power p next step.
+     * @param c
+     * @param p 
+     */
+    private void schedule(Coord c, int p) {
         
-        // update scheduled components, propagating
-        
-        // set inputs, propagating
-        
-        // reschedule
     }
     
-    public boolean[] outputs() {
-        // TODO read off outputs!
-        return new boolean[0];
+    /**
+     * Propagate change by notifying block at coord c of a neighbor change, 
+     * producing a state recomputation!
+     * @param c 
+     */
+    private void notify(Coord c) {
+        
+    }
+    
+    /**
+     * Simulate one step with given inputs!
+     * Or previous input if the input here is null.
+     * @param inputs 
+     */
+    public void step(boolean[] inputs) {
+        // TODO
+        
+        // update by scheduled updates
+        
+        
+        // update scheduled components, propagating
+        // we're just going to assume the updates are not order-dependent...
+        // propagate into a goddamn reschedule
+        
+        // set inputs, propagating
+        // when you propagate onto a component, schedule an update
+    }
+    
+    public int[] outputs() {
+        int[] vals = new int[outputs.size()];
+        for (int i = 0; i < outputs.size(); i++) {
+            Coord loc = outputs.get(i);
+            vals[i] = state[loc.x][loc.y][loc.z];
+        }
+        
+        return vals;
     }
 }
