@@ -60,7 +60,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         Sequence<LBase> inter = axiom.copy();
         for (int i = 0; i < batches.size(); i++) {
             ArrayList<Rule> batch = batches.get(i);
-            Sequence<Integer> mask = new Sequence(inter.elements.size(), 0);
+            Sequence<Integer> mask = new Sequence(inter.getElements().size(), 0);
             for (int j = 0; j < batch.size(); j++) {
                 batch.get(j).apply(inter, mask);
             }
@@ -127,7 +127,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 if (Math.random() < 0.3) {
                     // modify lhs
                     modify(r.lhs);
-                    if (r.lhs.elements.isEmpty()) { // remove rule!
+                    if (r.lhs.getElements().isEmpty()) { // remove rule!
                         // hacky solution
                         batches.get(batchnums.get(sel)).remove((int)batchindex.get(sel));
                     }

@@ -47,7 +47,7 @@ public class Block {
     /**
      * @return a BlockState that can be used to simulate this object
      */
-    public BlockState initState() {
+    public BlockState initState() { // TODO!!
         switch (id) {
             case AIR:
                 

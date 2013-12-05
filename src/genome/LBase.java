@@ -19,7 +19,7 @@ import evolver.Block;
  */
 public class LBase {
     public final Block block; // block to place
-    public final int move;  // turtle movement after placing block
+    public final int move;  // turtle movement direction after placing block
     
     public LBase(Block b, int m) {
         block = b;
@@ -35,6 +35,7 @@ public class LBase {
         LBase b = (LBase)o;
         
         // can add a don't-care condition here
-        return b.block == block && b.move == move;
+        return (b.block == block || block == null)
+            && (b.move == move || move == -1);
     }
 }

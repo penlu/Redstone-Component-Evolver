@@ -37,6 +37,36 @@ public class Coord implements Comparable<Coord> {
     }
     
     /**
+     * Converts a direction number to a coordinate
+     * @param dir 
+     */
+    public Coord(int dir) {
+        switch(dir) {
+            case 0:
+                x = 1; y = 0; z = 0;
+                break;
+            case 1:
+                x = 0; y = 1; z = 0;
+                break;
+            case 2:
+                x = 0; y = 0; z = 1;
+                break;
+            case 3:
+                x = -1; y = 0; z = 0;
+                break;
+            case 4:
+                x = 0; y = -1; z = 0;
+                break;
+            case 5:
+                x = 0; y = 0; z = -1;
+                break;
+            default:
+                x = 0; y = 0; z = 0;
+                break;
+        }
+    }
+    
+    /**
      * Add a coordinate to this one, returning result.
      * @param a
      * @return 
