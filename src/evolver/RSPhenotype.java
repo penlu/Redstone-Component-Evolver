@@ -22,7 +22,7 @@ import java.util.Map;
 public class RSPhenotype implements Phenotype {
     private Block[][][] contents; // all blocks in this device
     
-    private ArrayList<Coord> inputs; // TODO no way to enforce accessibility
+    private ArrayList<Coord> inputs; // NOTE no way to enforce accessibility
     private ArrayList<Coord> outputs;
 
     /**
@@ -82,18 +82,6 @@ public class RSPhenotype implements Phenotype {
         return new Coord(contents.length,
                          contents[0].length,
                          contents[0][0].length);
-    }
-    
-    /**
-     * Gets the volume of this redstone component.
-     * 
-     * Volume is defined as the number of voxels within one unit (including 
-     * diagonals) of a non-air block in this component.
-     * @return 
-     */
-    public int getVolume() {
-        // TODO
-        return 0;
     }
     
     /**
