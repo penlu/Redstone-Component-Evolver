@@ -81,7 +81,7 @@ public class RSPhenotype implements Phenotype {
     public Coord getSize() {
         return new Coord(contents.length,
                          contents[0].length,
-                         contents[0][0].length));
+                         contents[0][0].length);
     }
     
     /**

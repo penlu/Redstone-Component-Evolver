@@ -22,11 +22,8 @@ import java.util.ArrayList;
 public class Simulation {
     private RSPhenotype phenotype; // definitions of blocks in component
     private BlockState[][][] state; // current state of blocks in component
-    private Coord zero; // virtual location of the zero index
-    // TODO this zero bullshit seems unnecessary. fix phenotype so it stops being a thing.
     
     private ArrayList<Coord> scheduled; // components scheduled for updates
-                                        // make no mistake this stores their indices!
     
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
@@ -47,14 +44,14 @@ public class Simulation {
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 for (int k = 0; k < size.z; k++) {
-                    Coord loc = new Coord(i, j, k).add(zero);
+                    Coord loc = new Coord(i, j, k);
                     
                     state[i][j][k] = p.getBlock(loc).initState();
                     
                     // schedule components
                     if (Block.BlockID.isSchedulable(
                             p.getBlock(loc).id)) {
-                        scheduled.add(new Coord(i, j, k));
+                        scheduled.add(loc);
                     }
                 }
             }
@@ -67,8 +64,50 @@ public class Simulation {
         outputs = p.getOutputs();
     }
     
+    /**
+     * Get number of inputs, for Evaluation to decide about how many inputs to 
+     * give.
+     * @return 
+     */
     public int countInputs() {
         return inputs.size();
+    }
+    
+    /**
+     * Propagate an update to block coordinate c.
+     * 
+     * Basically conveniently decides whether immediate update or scheduling is 
+     * appropriate.
+     * @param c 
+     */
+    private void propagate(Coord c) {
+        // TODO flop if scheduling is appropriate or immediate update
+        // come on
+    }
+    
+    /**
+     * Updates the block at the coordinate c.
+     * 
+     * Propagates updates if appropriate and schedules if appropriate.
+     * @param c 
+     */
+    private void update(Coord c) {
+        // index out of bounds check
+        if (c.x < 0 || c.x > state.length
+         || c.y < 0 || c.y > state[0].length
+         || c.z < 0 || c.z > state[0][0].length) {
+            return;
+        }
+        
+        // propagate updates if necessary
+        if (state[c.x][c.y][c.z].update(state, c)) {
+            propagate(new Coord(c.x - 1, c.y    , c.z    ));
+            propagate(new Coord(c.x + 1, c.y    , c.z    ));
+            propagate(new Coord(c.x    , c.y - 1, c.z    ));
+            propagate(new Coord(c.x    , c.y + 1, c.z    ));
+            propagate(new Coord(c.x    , c.y    , c.z - 1));
+            propagate(new Coord(c.x    , c.y    , c.z + 1));
+        }
     }
     
     /**
@@ -77,18 +116,13 @@ public class Simulation {
      * @param inputs 
      */
     public void step(boolean[] inputs) {
-        // TODO
-        
-        
-        
         // update by scheduled updates
-        
-        
-        // update scheduled components, propagating
-        // we're just going to assume the updates are not order-dependent...
-        // propagate into a goddamn reschedule
+        for (Coord c : scheduled) {
+            update(c);
+        } // we're just going to assume the updates are not order-dependent...
         
         // set inputs, propagating
+        // TODO how to set inputs???
         // when you propagate onto a component, schedule an update
     }
     
