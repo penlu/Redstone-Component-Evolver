@@ -4,8 +4,6 @@
  */
 package evolver;
 
-import evaluation.Coord;
-import evaluation.Block;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -17,10 +15,7 @@ import java.util.Map;
  * depend on what the final phenotype is.
  * 
  * Data structure representing an arrangement of redstone components in the 
- * Minecraft environment.
- * 
- * This implementation uses a TreeMap to store its contents!
- * NOTE may require profiling.
+ * Minecraft environment.  Block placements assumed to be sane.
  * 
  * @author Eric Lu <penlume@gmail.com>
  */

@@ -4,6 +4,8 @@
  */
 package evaluation;
 
+import evolver.Block;
+import evolver.Coord;
 import evolver.RSPhenotype;
 import java.util.ArrayList;
 
@@ -18,12 +20,11 @@ import java.util.ArrayList;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Simulation {
-    private int[][][] state; // current state of the component
+    private RSPhenotype phenotype; // definitions of blocks in component
+    private BlockState[][][] state; // current state of blocks in component
     private Coord zero; // virtual location of the zero index
     
-    // update scheduling
     private ArrayList<Coord> scheduled; // components scheduled for updates
-    private ArrayList<Integer> schedpower; // power at update scheduling
     
     private ArrayList<Coord> inputs;
     private ArrayList<Coord> outputs;
@@ -33,21 +34,26 @@ public class Simulation {
      * @param p 
      */
     public Simulation(RSPhenotype p) {
-        // produce 3D state array
+        // coordinate frame calculations
         zero = p.getMinBound();
         Coord size = p.getMaxBound().sub(zero);
-        state = new int[size.x][size.y][size.z];
         
-        // schedule components for first update
+        // initialize containers
+        state = new BlockState[size.x][size.y][size.z];
         scheduled = new ArrayList<Coord>();
+        
+        // produce 3D state array and schedule components for first update
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 for (int k = 0; k < size.z; k++) {
                     Coord loc = new Coord(i, j, k).add(zero);
-                    if (Block.BlockID.isComponent(
+                    
+                    state[i][j][k] = p.getBlock(loc).initState();
+                    
+                    // schedule components
+                    if (Block.BlockID.isSchedulable(
                             p.getBlock(loc).id)) {
                         scheduled.add(loc);
-                        schedpower.add(0);
                     }
                 }
             }
@@ -62,24 +68,6 @@ public class Simulation {
     
     public int countInputs() {
         return inputs.size();
-    }
-    
-    /**
-     * Schedule element at coordinate c to be updated with power p next step.
-     * @param c
-     * @param p 
-     */
-    private void schedule(Coord c, int p) {
-        
-    }
-    
-    /**
-     * Propagate change by notifying block at coord c of a neighbor change, 
-     * producing a state recomputation!
-     * @param c 
-     */
-    private void notify(Coord c) {
-        
     }
     
     /**
@@ -105,7 +93,7 @@ public class Simulation {
         int[] vals = new int[outputs.size()];
         for (int i = 0; i < outputs.size(); i++) {
             Coord loc = outputs.get(i);
-            vals[i] = state[loc.x][loc.y][loc.z];
+            vals[i] = state[loc.x][loc.y][loc.z].weakPower(0); // TODO what dir?
         }
         
         return vals;

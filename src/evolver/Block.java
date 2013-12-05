@@ -1,5 +1,7 @@
 
-package evaluation;
+package evolver;
+
+import evaluation.BlockState;
 
 /**
  * Data structure storing information about a single block.
@@ -18,7 +20,7 @@ public class Block {
         TORCH,  // redstone torch
         BLOCK;  // normal block
         
-        public static boolean isComponent(BlockID id) {
+        public static boolean isSchedulable(BlockID id) {
             if (id == TORCH) {
                 return true;
             } else {
@@ -40,5 +42,24 @@ public class Block {
         
         Block b = (Block)o;
         return b.id == id && b.data == data;
+    }
+    
+    /**
+     * @return a BlockState that can be used to simulate this object
+     */
+    public BlockState initState() {
+        switch (id) {
+            case AIR:
+                
+                break;
+            case WIRE:
+                break;
+            case TORCH:
+                break;
+            case BLOCK:
+                break;
+        }
+        
+        return null;
     }
 }

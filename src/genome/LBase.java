@@ -4,7 +4,7 @@
  */
 package genome;
 
-import evaluation.Block;
+import evolver.Block;
 
 /**
  * Stores a base for the L-system genome.
