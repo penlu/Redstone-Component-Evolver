@@ -5,14 +5,14 @@
 package genome;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Provides manipulation utilities for a string of "elements".
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Sequence<E> {
-    ArrayList<E> elements; // list of elements in this sequence
-    // NOTE access modifier?
+    private ArrayList<E> elements; // elements of elements in this sequence
     
     /**
      * Create a new empty sequence.
@@ -44,6 +44,10 @@ public class Sequence<E> {
         return new Sequence(elements);
     }
     
+    public ArrayList<E> getElements() {
+        return (ArrayList<E>)Collections.unmodifiableList(elements);
+    }
+    
     /**
      * Retrieves the subsequence of this sequence consisting of the elements with 
      * indices in the range [begin, end).
@@ -64,11 +68,11 @@ public class Sequence<E> {
      */
     public int match(Sequence s, int begin) {
         // naive substring match algorithm
-        for (int i = begin, l = elements.size() - s.elements.size(); i < l; i++) {
+        for (int i = begin, l = elements.size() - s.getElements().size(); i < l; i++) {
             boolean match = true;
             // check if this location matches substring
-            for (int j = 0; j < s.elements.size(); j++) {
-                if (!s.elements.get(j).equals(elements.get(j + i))) {
+            for (int j = 0; j < s.getElements().size(); j++) {
+                if (!s.getElements().get(j).equals(elements.get(j + i))) {
                     match = false;
                     break;
                 }
@@ -108,7 +112,7 @@ public class Sequence<E> {
         }
         
         // add elements
-        elements.addAll(i, s.elements);
+        elements.addAll(i, s.getElements());
         return true;
     }
     
@@ -133,8 +137,7 @@ public class Sequence<E> {
         }
         
         // retrieve removed elements
-        Sequence s = new Sequence();
-        s.elements = (ArrayList<E>)elements.subList(i, i + n);
+        Sequence s = new Sequence((ArrayList<E>)elements.subList(i, i + n));
         
         // remove elements
         for (int x = 0; x < n; x++) {
