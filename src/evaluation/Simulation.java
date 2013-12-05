@@ -25,7 +25,7 @@ public class Simulation {
     
     private ArrayList<Coord> scheduled; // components scheduled for updates
     
-    private ArrayList<Coord> inputs;
+    private ArrayList<InputBlock> inputblocks;
     private ArrayList<Coord> outputs;
     
     /**
@@ -58,9 +58,18 @@ public class Simulation {
         }
         
         // store inputs
-        inputs = p.getInputs();
+        ArrayList<Coord> inputs = p.getInputs();
         
-        // store outputs
+        // make inputblocks that radiate weak power in all directions
+        for (int i = 0; i < inputs.size(); i++) {
+            Coord inloc = inputs.get(i);
+            InputBlock in = new InputBlock();
+            
+            state[inloc.x][inloc.y][inloc.z] = in;
+            inputblocks.add(in);
+        }
+        
+        // store output locations
         outputs = p.getOutputs();
     }
     
@@ -70,7 +79,7 @@ public class Simulation {
      * @return 
      */
     public int countInputs() {
-        return inputs.size();
+        return inputblocks.size();
     }
     
     /**
@@ -81,8 +90,18 @@ public class Simulation {
      * @param c 
      */
     private void propagate(Coord c) {
-        // TODO flop if scheduling is appropriate or immediate update
-        // come on
+        if (Block.BlockID.isSchedulable(phenotype.getBlock(c).id)) {
+            scheduled.add(c);
+            
+            // remove duplicate update schedules
+            for (int i = 0; i < scheduled.size() - 1; i++) {
+                if (scheduled.get(i).equals(c)) {
+                    scheduled.remove(i);
+                }
+            }
+        } else {
+            state[c.x][c.y][c.z].update(state, c);
+        }
     }
     
     /**
@@ -115,22 +134,30 @@ public class Simulation {
      * Or previous input if the input here is null.
      * @param inputs 
      */
-    public void step(boolean[] inputs) {
+    public void step(int[] inputs) {
         // update by scheduled updates
         for (Coord c : scheduled) {
             update(c);
         } // we're just going to assume the updates are not order-dependent...
         
-        // set inputs, propagating
-        // TODO how to set inputs???
-        // when you propagate onto a component, schedule an update
+        // set inputs on blocks defined in init
+        for (int i = 0; i < inputblocks.size(); i++) {
+            if (i < inputs.length) {
+                inputblocks.get(i).setState(inputs[i]);
+            }
+        }
     }
     
-    public int[] outputs() {
-        int[] vals = new int[outputs.size()];
+    /**
+     * Get outputs.
+     * @return TODO make the outputs weak power strengths
+     */
+    public boolean[] outputs() {
+        boolean[] vals = new boolean[outputs.size()];
         for (int i = 0; i < outputs.size(); i++) {
             Coord loc = outputs.get(i);
-            vals[i] = state[loc.x][loc.y][loc.z].weakPower(0); // TODO what dir?
+            
+            vals[i] = state[loc.x][loc.y][loc.z].indirectPower();
         }
         
         return vals;

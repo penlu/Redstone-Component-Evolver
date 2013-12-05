@@ -18,6 +18,9 @@ public class EnderTurtle {
      */
     public static RSPhenotype process(Sequence<LBase> s) {
         // TODO
+        
+        // remember that the phenotype should have blocks in the right places
+        // it won't be checked during sim time
         return null;
     }
 }

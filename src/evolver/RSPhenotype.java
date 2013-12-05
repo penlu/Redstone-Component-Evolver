@@ -22,7 +22,7 @@ import java.util.Map;
 public class RSPhenotype implements Phenotype {
     private Block[][][] contents; // all blocks in this device
     
-    private ArrayList<Coord> inputs;
+    private ArrayList<Coord> inputs; // TODO no way to enforce accessibility
     private ArrayList<Coord> outputs;
 
     /**
