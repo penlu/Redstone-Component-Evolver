@@ -26,14 +26,29 @@ public class EnderTurtle {
         ArrayList<LModule> bases = s.getElements();
         
         Coord pos = new Coord(0, 0, 0);
+        ArrayList<Coord> stack = new ArrayList<Coord>();
         
         // follow the given instructions
         for (int i = 0; i < bases.size(); i++) {
-            parts.put(pos, bases.get(i).block);
-            pos = pos.add(new Coord(bases.get(i).move));
+            LModule inst = bases.get(i);
+            
+            if (inst instanceof BlockModule) {
+                BlockModule binst = (BlockModule)inst;
+                parts.put(pos, binst.block);
+                // clear inputs at location
+                pos = pos.add(new Coord(binst.move));
+            } else if (inst instanceof StackModule) {
+                stack.add(pos);
+            } else if (inst instanceof DestackModule) {
+                if (stack.size() > 0) {
+                    pos = stack.remove(stack.size() - 1);
+                }
+            } else if (inst instanceof InputModule) {
+                // add input
+            } else if (inst instanceof OutputModule) {
+                // add output
+            }
         }
-        
-        // TODO input, output, stack, destack...?? modify Rule and Sequence!
         
         // fix blocks that need to be attached to something
         for (Map.Entry<Coord, Block> entry : parts.entrySet()) {
