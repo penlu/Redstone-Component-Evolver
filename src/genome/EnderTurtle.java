@@ -22,8 +22,11 @@ public class EnderTurtle {
      * @return phenotype constructed from sequence
      */
     public static RSPhenotype process(Sequence<LModule> s) {
-        TreeMap<Coord, Block> parts = new TreeMap<Coord, Block>();
         ArrayList<LModule> bases = s.getElements();
+        
+        TreeMap<Coord, Block> parts = new TreeMap<Coord, Block>();
+        ArrayList<Coord> inputs = new ArrayList<Coord>();
+        ArrayList<Coord> outputs = new ArrayList<Coord>();
         
         Coord pos = new Coord(0, 0, 0);
         ArrayList<Coord> stack = new ArrayList<Coord>();
@@ -35,7 +38,17 @@ public class EnderTurtle {
             if (inst instanceof BlockModule) {
                 BlockModule binst = (BlockModule)inst;
                 parts.put(pos, binst.block);
-                // clear inputs at location
+                
+                // clear inputs/outputs at location
+                for (int j = 0; j < inputs.size(); j++) {
+                    if (inputs.get(j).equals(pos)) {
+                        inputs.remove(j);
+                    }
+                    if (outputs.get(j).equals(pos)) {
+                        outputs.remove(j);
+                    }
+                }
+                
                 pos = pos.add(new Coord(binst.move));
             } else if (inst instanceof StackModule) {
                 stack.add(pos);
@@ -44,9 +57,19 @@ public class EnderTurtle {
                     pos = stack.remove(stack.size() - 1);
                 }
             } else if (inst instanceof InputModule) {
-                // add input
+                inputs.add(pos);
+                for (int j = 0; j < inputs.size() - 1; j++) {
+                    if (inputs.get(j).equals(pos)) {
+                        inputs.remove(j);
+                    }
+                }
             } else if (inst instanceof OutputModule) {
-                // add output
+                outputs.add(pos);
+                for (int j = 0; j < outputs.size() - 1; j++) {
+                    if (outputs.get(j).equals(pos)) {
+                        outputs.remove(j);
+                    }
+                }
             }
         }
         
@@ -67,6 +90,6 @@ public class EnderTurtle {
             }
         }
         
-        return new RSPhenotype(parts, new ArrayList<Coord>(), new ArrayList<Coord>());
+        return new RSPhenotype(parts, inputs, outputs);
     }
 }
