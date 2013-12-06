@@ -19,30 +19,14 @@ import java.util.ArrayList;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class LModule {
-    public static enum LSymbol {
-        ABSTRACT,
-        BLOCK,
-        STACK,
-        DESTACK,
-        INPUT,
-        OUTPUT;
-    }
+    public final boolean abs; // is this instruction abstract?
     
-    LSymbol symbol; // symbol
-    Block payload; // block instruction this carries, if any
-    int data; // integer data this carries
-    
-    
-    
-    
-    
-    public final Block block; // block to place
-    public final int move;  // turtle movement direction after placing block
-    
-    public LModule(Block b, int m) {
-        block = b;
-        move = m;
-    }
+    public final Block block; // block this defines, if any
+    public final int action; // generic integer information
+                             // if abstract, is abstraction level
+                             // if block is null, defines a stack/destack/
+                             // set input/set output; else represents move 
+                             // after placing block
     
     @Override
     public boolean equals(Object o) {
