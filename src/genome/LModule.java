@@ -5,11 +5,12 @@
 package genome;
 
 import evolver.Block;
+import java.util.ArrayList;
 
 /**
  * Stores a base for the L-system genome.
  * 
- * LBase objects allow for equals comparisons with arbitrary behavior and 
+ * LModule objects allow for equals comparisons with arbitrary behavior and 
  * parametrized 0-context L-systems.
  * 
  * This one stores a part, part data, and the direction to move after the 
@@ -17,22 +18,39 @@ import evolver.Block;
  * 
  * @author Eric Lu <penlume@gmail.com>
  */
-public class LBase {
+public class LModule {
+    public static enum LSymbol {
+        ABSTRACT,
+        BLOCK,
+        STACK,
+        DESTACK,
+        INPUT,
+        OUTPUT;
+    }
+    
+    LSymbol symbol; // symbol
+    Block payload; // block instruction this carries, if any
+    int data; // integer data this carries
+    
+    
+    
+    
+    
     public final Block block; // block to place
     public final int move;  // turtle movement direction after placing block
     
-    public LBase(Block b, int m) {
+    public LModule(Block b, int m) {
         block = b;
         move = m;
     }
     
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof LBase)) {
+        if (!(o instanceof LModule)) {
             return false;
         }
         
-        LBase b = (LBase)o;
+        LModule b = (LModule)o;
         
         // can add a don't-care condition here
         return (b.block == block || block == null)

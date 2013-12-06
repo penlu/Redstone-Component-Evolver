@@ -21,9 +21,9 @@ public class EnderTurtle {
      * @param s sequence program to run
      * @return phenotype constructed from sequence
      */
-    public static RSPhenotype process(Sequence<LBase> s) {
+    public static RSPhenotype process(Sequence<LModule> s) {
         TreeMap<Coord, Block> parts = new TreeMap<Coord, Block>();
-        ArrayList<LBase> bases = s.getElements();
+        ArrayList<LModule> bases = s.getElements();
         
         Coord pos = new Coord(0, 0, 0);
         

@@ -16,11 +16,11 @@ import java.util.ArrayList;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
-    Sequence<LBase> axiom; // starting axiom for intertype translation
+    Sequence<LModule> axiom; // starting axiom for intertype translation
     ArrayList<ArrayList<Rule>> batches; // list of batches of rules
     
     public RSLGenome() {
-        axiom = new Sequence<LBase>();
+        axiom = new Sequence<LModule>();
         batches = new ArrayList<ArrayList<Rule>>();
     }
     
@@ -57,7 +57,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     */
     public RSPhenotype toPhenotype() {
         // translate axiom to final intertype
-        Sequence<LBase> inter = axiom.copy();
+        Sequence<LModule> inter = axiom.copy();
         for (int i = 0; i < batches.size(); i++) {
             ArrayList<Rule> batch = batches.get(i);
             Sequence<Integer> mask = new Sequence(inter.getElements().size(), 0);
@@ -70,7 +70,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         return EnderTurtle.process(inter);
     }
     
-    private void modify(Sequence<LBase> s) {
+    private void modify(Sequence<LModule> s) {
         // TODO!
         // literally the only thing that makes sense is to delegate the modifications to the Sequence class
     }
