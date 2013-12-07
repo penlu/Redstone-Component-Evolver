@@ -89,6 +89,7 @@ public class Simulation {
         
         // initialize containers
         state = new BlockState[size.x + 2][size.y + 2][size.z + 2]; // lazy man's index out of bounds avoidance
+                                                                    // TODO make less ghetto
         scheduled = new ArrayList<Coord>();
         
         // produce 3D state array and schedule components for first update
