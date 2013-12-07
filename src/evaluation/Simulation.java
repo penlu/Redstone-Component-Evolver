@@ -20,12 +20,45 @@ import java.util.ArrayList;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Simulation {
+    public static class InputState implements BlockState {
+        Block b; // block for getBlock
+        int state; // if input is on or off
+
+        public InputState() {
+            b = new Block(Block.BlockID.AIR, 0);
+        }
+
+        public Block getBlock() {
+            return b;
+        }
+
+        public void setState(int newstate) {
+            state = newstate;
+        }
+
+        public boolean update(BlockState[][][] world, Coord loc) {
+            return true;
+        }
+
+        public boolean indirectPower() {
+            return state > 0;
+        }
+
+        public int weakPower(int dir) {
+            return state;
+        }
+
+        public int strongPower(int dir) {
+            return 0;
+        }
+    }
+    
     private RSPhenotype phenotype; // definitions of blocks in component
     private BlockState[][][] state; // current state of blocks in component
     
     private ArrayList<Coord> scheduled; // components scheduled for updates
     
-    private ArrayList<InputBlock> inputblocks;
+    private ArrayList<InputState> inputblocks;
     private ArrayList<Coord> outputs;
     
     /**
@@ -63,7 +96,7 @@ public class Simulation {
         // make inputblocks that radiate weak power in all directions
         for (int i = 0; i < inputs.size(); i++) {
             Coord inloc = inputs.get(i);
-            InputBlock in = new InputBlock();
+            InputState in = new InputState();
             
             state[inloc.x][inloc.y][inloc.z] = in;
             inputblocks.add(in);
