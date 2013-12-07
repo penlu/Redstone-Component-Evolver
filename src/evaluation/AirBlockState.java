@@ -6,6 +6,7 @@ package evaluation;
 
 import evolver.Block;
 import evolver.Coord;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,12 +19,12 @@ public class AirBlockState implements BlockState {
         block = b;
     }
 
-    public Block getBlock() {
+    public Block block() {
         return block;
     }
 
-    public boolean update(BlockState[][][] world, Coord loc) {
-        return false;
+    public ArrayList<Coord> update(World world, Coord loc) {
+        return new ArrayList<Coord>();
     }
 
     public boolean indirectPower() {

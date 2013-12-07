@@ -38,34 +38,34 @@ public class Coord implements Comparable<Coord> {
     
     /**
      * Converts from numerical directions to coordinates
-     * 0 - -x
-     * 1 - +x
-     * 2 - -y
-     * 3 - +y
-     * 4 - -z
-     * 5 - +z
+     * 0 - -y
+     * 1 - +y
+     * 2 - -z
+     * 3 - +z
+     * 4 - -x
+     * 5 - +x
      * @param dir a numerical direction
      * @return the coordinate that the numerical direction represents
      */
     public Coord(int dir) {
         switch(dir) {
             case 0:
-                x = -1; y = 0; z = 0;
-                break;
-            case 1:
-                x = 1; y = 0; z = 0;
-                break;
-            case 2:
                 x = 0; y = -1; z = 0;
                 break;
-            case 3:
+            case 1:
                 x = 0; y = 1; z = 0;
                 break;
-            case 4:
+            case 2:
                 x = 0; y = 0; z = -1;
                 break;
-            case 5:
+            case 3:
                 x = 0; y = 0; z = 1;
+                break;
+            case 4:
+                x = -1; y = 0; z = 0;
+                break;
+            case 5:
+                x = 1; y = 0; z = 0;
                 break;
             default:
                 x = 0; y = 0; z = 0;

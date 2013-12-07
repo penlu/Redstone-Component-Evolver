@@ -17,7 +17,7 @@ public interface BlockState {
      * Get info of the block this activizes.
      * @return
      */
-    public Block getBlock();
+    public Block block();
     
     /**
      * Update state of this block using world data and this block's location

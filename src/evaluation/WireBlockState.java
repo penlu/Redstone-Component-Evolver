@@ -21,63 +21,53 @@ public class WireBlockState implements BlockState {
         block = b;
     }
 
-    public Block getBlock() {
+    public Block block() {
         return block;
     }
     
-    /**
-     * 
-     * @param world
-     * @param loc
-     * @return a list of locations of wires that conduct to this one
-     */
-    private ArrayList<Coord> getConductingWires(BlockState[][][] world, Coord loc) {
-        ArrayList<Coord> wires = new ArrayList<Coord>();
-        
-        int[] cardinals = {0, 1, 4, 5}; // cardinal directions
-        for (int i = 0; i < 4; i++) {
-            Coord side = new Coord(cardinals[i]);
-            if (world[side.x][side.y][side.z].getBlock().id == BlockID.WIRE) {
-                wires.add(side);
-            } else if (world[side.x][side.y][side.z].getBlock().id == BlockID.AIR
-                    && world[side.x][side.y - 1][side.z].getBlock().id == BlockID.WIRE) {
-                wires.add(side.add(new Coord(0, -1, 0))); // add below
-            } else if (world[loc.x][loc.y + 1][loc.z].getBlock().id == BlockID.AIR
-                    && world[side.x][side.y + 1][side.z].getBlock().id == BlockID.WIRE) {
-                wires.add(side.add(new Coord(0, 1, 0))); // add above
-            }
-        }
-        
-        return wires;
-    }
-
-    // get maximum incoming current
-    private int getMaxCurrent(BlockState[][][] world, Coord loc) {
-        int maxcurrent = 0;
-        for (int i = 0; i < 6; i++) {
-            // maximize weak/strong incoming power on all sides
-            Coord dir = loc.add(new Coord(i));
-            BlockState adj = world[dir.x][dir.y][dir.z];
-            int rev = i ^ 1; // reverse direction
-
-            // TODO disregard wires in this step
-            int power = Math.max(adj.weakPower(rev), adj.strongPower(rev));
-            if (power > maxcurrent) {
-                maxcurrent = power;
-            }
-        }
-
-        // also check all neighboring wires
-        ArrayList<Coord> wires = getConductingWires(world, loc);
-        for (int i = 0; i < wires.size(); i++) {
-            // all accessible wires DO conduct
+    private int neighborWireInputs(World world, Coord loc) {
+        int maxInput = 0;
+        for (int dir = 2; dir < 5; dir++) {
+            Coord ngbloc = loc.add(new Coord(dir));
             
-            maxcurrent = Math.max(maxcurrent, 1); // TODO don't disregard wires
+            // neighboring on same level
+            if (world.getBlock(ngbloc).block().id == Block.BlockID.WIRE) {
+                maxInput = Math.max(maxInput, 0); // TODO how to get wire info from wires?
+            }
+            
+            // neighboring blocks below
+            if (world.getBlock(ngbloc).block().id == Block.BlockID.AIR
+             && world.getBlock(ngbloc.add(new Coord(0, -1, 0))).block().id == Block.BlockID.WIRE) {
+                maxInput = Math.max(maxInput, 0);
+            }
+            
+            // neighboring blocks above
+            if (world.getBlock(loc.add(new Coord(0, 1, 0))).block().id == Block.BlockID.AIR
+             && world.getBlock(ngbloc.add(new Coord(0, 1, 0))).block().id == Block.BlockID.WIRE) {
+                maxInput = Math.max(maxInput, 0);
+            }
         }
+        
+        return maxInput;
     }
 
-    public boolean update(BlockState[][][] world, Coord loc) {
-
+    public ArrayList<Coord> update(World world, Coord loc) {
+        // update and propagate current strengths
+        int newlevel = Math.max(Math.max(world.highestWeakInput(loc), neighborWireInputs(world, loc)) - 1, 0);
+        
+        if (newlevel - 1 != level) {
+            // change power level
+            level = newlevel - 1;
+            
+            // update all neighbors!
+            ArrayList<Coord> toUpdate = new ArrayList<Coord>();
+            for (int dir = 0; dir < 6; dir++) {
+                toUpdate.add(new Coord(dir));
+            }
+            return toUpdate;
+        } else {
+            return new ArrayList<Coord>();
+        }
     }
     
     public boolean indirectPower() {
@@ -85,6 +75,10 @@ public class WireBlockState implements BlockState {
     }
     
     public int weakPower(int dir) {
+        
+    }
+    
+    public int strongPower(int dir) {
         
     }
 }

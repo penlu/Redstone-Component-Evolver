@@ -20,7 +20,7 @@ public class InputBlockState implements BlockState {
         b = new Block(Block.BlockID.AIR, 0);
     }
 
-    public Block getBlock() {
+    public Block block() {
         return b;
     }
 
