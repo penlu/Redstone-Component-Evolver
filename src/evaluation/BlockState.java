@@ -6,6 +6,7 @@ package evaluation;
 
 import evolver.Block;
 import evolver.Coord;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,9 +21,9 @@ public interface BlockState {
     
     /**
      * Update state of this block using world data and this block's location
-     * @return did the state change?
+     * @return any blocks that need updating as a consequence of this update
      */
-    public boolean update(BlockState[][][] world, Coord loc);
+    public ArrayList<Coord> update(World world, Coord loc);
     
     /**
      * Is this block emitting indirect power?

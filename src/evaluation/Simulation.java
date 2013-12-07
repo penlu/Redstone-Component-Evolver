@@ -38,41 +38,8 @@ public class Simulation {
         }
     }
     
-    public static class InputBlockState implements BlockState {
-        Block b; // block for getBlock
-        int state; // if input is on or off
-
-        public InputBlockState() {
-            b = new Block(Block.BlockID.AIR, 0);
-        }
-
-        public Block getBlock() {
-            return b;
-        }
-
-        public void setState(int newstate) {
-            state = newstate;
-        }
-
-        public boolean update(BlockState[][][] world, Coord loc) {
-            return true;
-        }
-
-        public boolean indirectPower() {
-            return state > 0;
-        }
-
-        public int weakPower(int dir) {
-            return state;
-        }
-
-        public int strongPower(int dir) {
-            return 0;
-        }
-    }
-    
     private RSPhenotype phenotype; // definitions of blocks in component
-    private BlockState[][][] state; // current state of blocks in component
+    private World world; // stores current states of blocks in component
     
     private ArrayList<Coord> scheduled; // components scheduled for updates
     
@@ -88,8 +55,8 @@ public class Simulation {
         Coord size = p.getSize();
         
         // initialize containers
-        state = new BlockState[size.x + 2][size.y + 2][size.z + 2]; // lazy man's index out of bounds avoidance
-                                                                    // TODO make less ghetto
+        BlockState[][][] state = new BlockState[size.x][size.y][size.z];
+        
         scheduled = new ArrayList<Coord>();
         
         // produce 3D state array and schedule components for first update
@@ -98,7 +65,7 @@ public class Simulation {
                 for (int k = 0; k < size.z; k++) {
                     Coord loc = new Coord(i, j, k);
                     
-                    state[i][j][k] = produceState(p.getBlock(loc.sub(new Coord(-1, -1, -1))));
+                    state[i][j][k] = produceState(p.getBlock(loc));
                     
                     // schedule components
                     if (Block.BlockID.isSchedulable(
@@ -120,6 +87,9 @@ public class Simulation {
             state[inloc.x][inloc.y][inloc.z] = in;
             inputblocks.add(in);
         }
+        
+        // produce World object for this state array
+        world = new World(state);
         
         // store output locations
         outputs = p.getOutputs();
@@ -152,7 +122,7 @@ public class Simulation {
                 }
             }
         } else {
-            state[c.x][c.y][c.z].update(state, c);
+            world.getBlock(c).update(world, c);
         }
     }
     
@@ -163,21 +133,11 @@ public class Simulation {
      * @param c 
      */
     private void update(Coord c) {
-        // index out of bounds check
-        if (c.x < 0 || c.x > state.length
-         || c.y < 0 || c.y > state[0].length
-         || c.z < 0 || c.z > state[0][0].length) {
-            return;
-        }
+        // propagate requested updates
+        ArrayList<Coord> updates = world.getBlock(c).update(world, c);
         
-        // propagate updates if necessary
-        if (state[c.x][c.y][c.z].update(state, c)) {
-            propagate(new Coord(c.x - 1, c.y    , c.z    ));
-            propagate(new Coord(c.x + 1, c.y    , c.z    ));
-            propagate(new Coord(c.x    , c.y - 1, c.z    ));
-            propagate(new Coord(c.x    , c.y + 1, c.z    ));
-            propagate(new Coord(c.x    , c.y    , c.z - 1));
-            propagate(new Coord(c.x    , c.y    , c.z + 1));
+        for (int i = 0; i < updates.size(); i++) {
+            propagate(updates.get(i));
         }
     }
     
@@ -209,11 +169,11 @@ public class Simulation {
         for (int i = 0; i < outputs.size(); i++) {
             Coord loc = outputs.get(i);
             
-            // see if output is receiving power from neighboring squares
+            // see if output is receiving power from neighboring blocks
             int maxpow = 0; // prepare to get maximum received power
             for (int dir = 0; dir < 5; dir++) {
                 Coord adj = loc.sub(new Coord(dir));
-                BlockState neighbor = state[adj.x][adj.y][adj.z];
+                BlockState neighbor = world.getBlock(adj);
                 int pow = Math.max(neighbor.weakPower(dir),
                                    neighbor.strongPower(dir));
                 if (pow > maxpow) {

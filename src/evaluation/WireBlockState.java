@@ -60,31 +60,20 @@ public class WireBlockState implements BlockState {
             BlockState adj = world[dir.x][dir.y][dir.z];
             int rev = i ^ 1; // reverse direction
 
+            // TODO disregard wires in this step
             int power = Math.max(adj.weakPower(rev), adj.strongPower(rev));
             if (power > maxcurrent) {
                 maxcurrent = power;
             }
         }
 
-        // also check wires at different heights
-        if (world[loc.x][loc.y + 1][loc.z].getBlock().id
-         == Block.BlockID.AIR) {
-            // check incoming from above
-            int[] dirlist = {0, 1, 4, 5}; // cardinal directions
-            for (int i = 0; i < 4; i++) {
-                Coord dir = new Coord(dirlist[i]).add(new Coord(0, 1, 0));
-                BlockState adj = world[dir.x][dir.y][dir.z];
-                int rev = dirlist[i] ^ 1;
-
-                int power = Math.max(adj.weakPower(rev), adj.strongPower(rev));
-                if (power > maxcurrent) {
-                    maxcurrent = power;
-                }
-            }
+        // also check all neighboring wires
+        ArrayList<Coord> wires = getConductingWires(world, loc);
+        for (int i = 0; i < wires.size(); i++) {
+            // all accessible wires DO conduct
+            
+            maxcurrent = Math.max(maxcurrent, 1); // TODO don't disregard wires
         }
-
-        // check incoming from below
-        
     }
 
     public boolean update(BlockState[][][] world, Coord loc) {
