@@ -20,11 +20,29 @@ import java.util.ArrayList;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Simulation {
-    public static class InputState implements BlockState {
+    /**
+     * @return a BlockState that can be used to simulate this object
+     */
+    public static BlockState produceState(Block b) {
+        switch (b.id) {
+            case AIR:
+                return new AirBlockState(b);
+            case WIRE:
+                return new WireBlockState(b);
+            case TORCH:
+                return new TorchBlockState(b);
+            case BLOCK:
+                return new BlockBlockState(b);
+            default:
+                return null;
+        }
+    }
+    
+    public static class InputBlockState implements BlockState {
         Block b; // block for getBlock
         int state; // if input is on or off
 
-        public InputState() {
+        public InputBlockState() {
             b = new Block(Block.BlockID.AIR, 0);
         }
 
@@ -58,7 +76,7 @@ public class Simulation {
     
     private ArrayList<Coord> scheduled; // components scheduled for updates
     
-    private ArrayList<InputState> inputblocks;
+    private ArrayList<InputBlockState> inputblocks;
     private ArrayList<Coord> outputs;
     
     /**
@@ -70,7 +88,7 @@ public class Simulation {
         Coord size = p.getSize();
         
         // initialize containers
-        state = new BlockState[size.x][size.y][size.z];
+        state = new BlockState[size.x + 2][size.y + 2][size.z + 2]; // lazy man's index out of bounds avoidance
         scheduled = new ArrayList<Coord>();
         
         // produce 3D state array and schedule components for first update
@@ -79,7 +97,7 @@ public class Simulation {
                 for (int k = 0; k < size.z; k++) {
                     Coord loc = new Coord(i, j, k);
                     
-                    state[i][j][k] = p.getBlock(loc).initState();
+                    state[i][j][k] = produceState(p.getBlock(loc.sub(new Coord(-1, -1, -1))));
                     
                     // schedule components
                     if (Block.BlockID.isSchedulable(
@@ -96,7 +114,7 @@ public class Simulation {
         // make inputblocks that radiate weak power in all directions
         for (int i = 0; i < inputs.size(); i++) {
             Coord inloc = inputs.get(i);
-            InputState in = new InputState();
+            InputBlockState in = new InputBlockState();
             
             state[inloc.x][inloc.y][inloc.z] = in;
             inputblocks.add(in);

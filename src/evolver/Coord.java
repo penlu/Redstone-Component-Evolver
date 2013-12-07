@@ -37,28 +37,35 @@ public class Coord implements Comparable<Coord> {
     }
     
     /**
-     * Converts a direction number to a coordinate
-     * @param dir 
+     * Converts from numerical directions to coordinates
+     * 0 - -x
+     * 1 - +x
+     * 2 - -y
+     * 3 - +y
+     * 4 - -z
+     * 5 - +z
+     * @param dir a numerical direction
+     * @return the coordinate that the numerical direction represents
      */
     public Coord(int dir) {
         switch(dir) {
             case 0:
-                x = 1; y = 0; z = 0;
-                break;
-            case 1:
-                x = 0; y = 1; z = 0;
-                break;
-            case 2:
-                x = 0; y = 0; z = 1;
-                break;
-            case 3:
                 x = -1; y = 0; z = 0;
                 break;
-            case 4:
+            case 1:
+                x = 1; y = 0; z = 0;
+                break;
+            case 2:
                 x = 0; y = -1; z = 0;
                 break;
-            case 5:
+            case 3:
+                x = 0; y = 1; z = 0;
+                break;
+            case 4:
                 x = 0; y = 0; z = -1;
+                break;
+            case 5:
+                x = 0; y = 0; z = 1;
                 break;
             default:
                 x = 0; y = 0; z = 0;
@@ -79,16 +86,7 @@ public class Coord implements Comparable<Coord> {
         return new Coord(x - a.x, y - a.y, z - a.z);
     }
     
-    /**
-     * Converts from numerical directions to offsets.
-     * 0 - up
-     * 1 - +x
-     * 2 - +y
-     * 3 - -x
-     * 4 - -y
-     * @param dir a numerical direction
-     * @return the coordinate that the numerical direction represents
-     */
+
     public static Coord coordFromDir(int dir) {
         switch(dir) {
             case 0:

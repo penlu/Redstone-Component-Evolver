@@ -78,23 +78,4 @@ public class Block {
             return false;
         }
     }
-    
-    /**
-     * @return a BlockState that can be used to simulate this object
-     */
-    public BlockState initState() { // TODO!!
-        switch (id) {
-            case AIR:
-                
-                break;
-            case WIRE:
-                break;
-            case TORCH:
-                break;
-            case BLOCK:
-                break;
-        }
-        
-        return null;
-    }
 }
