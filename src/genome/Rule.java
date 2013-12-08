@@ -34,7 +34,7 @@ public class Rule {
      */
     public void apply(Sequence<Module> s) {
         // ensure non-degenerate case
-        if (lhs != null) {
+        if (lhs == null || s == null) {
             return;
         }
         

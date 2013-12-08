@@ -90,7 +90,7 @@ public class EnderTurtle {
      * Returns a randomly chosen concrete module.
      * @return 
      */
-    public static Module randomModule() {
+    public static Module randomConcreteModule() {
         int choice = (int)(Math.random() * 5);
         switch (choice) {
             case 0:
@@ -113,7 +113,7 @@ public class EnderTurtle {
      * @param s sequence program to run
      * @return phenotype constructed from sequence
      */
-    public static RSPhenotype process(Sequence<Module> s) {
+    public static RSPhenotype process(Sequence<Module> s) { // TODO
         ArrayList<Module> bases = s.getElements();
         
         TreeMap<Coord, Block> parts = new TreeMap<Coord, Block>();

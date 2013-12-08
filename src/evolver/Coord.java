@@ -86,24 +86,6 @@ public class Coord implements Comparable<Coord> {
         return new Coord(x - a.x, y - a.y, z - a.z);
     }
     
-
-    public static Coord coordFromDir(int dir) {
-        switch(dir) {
-            case 0:
-                return new Coord(0, 1, 0);
-            case 1:
-                return new Coord(1, 0, 0);
-            case 2:
-                return new Coord(0, 0, 1);
-            case 3:
-                return new Coord(-1, 0, 0);
-            case 4:
-                return new Coord(0, 0, -1);
-            default:
-                return new Coord(0, 0, 0);
-        }
-    }
-    
     public int compareTo(Coord c) {
         if (x < c.x) {
             return -4;
