@@ -88,7 +88,7 @@ public class WireBlockState implements BlockState {
 
     public ArrayList<Coord> update(World world, Coord loc) {
         // update and propagate current strengths
-        int newlevel = Math.max(Math.max(world.indirectPowerInput(loc), neighborWireInputs(world, loc)) - 1, 0);
+        int newlevel = Math.max(Math.max(world.weakPowerInput(loc), neighborWireInputs(world, loc)) - 1, 0);
         
         // recalculate wire configuration from connections
         reconnect(world, loc);

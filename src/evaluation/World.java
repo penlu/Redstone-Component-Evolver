@@ -34,7 +34,7 @@ public class World {
      * @param c
      * @return 
      */
-    public int strongInput(Coord c) {
+    public int strongPowerInput(Coord c) {
         int leakage = 0;
         for (int dir = 0; dir < 6; dir++) {
             Coord inputLoc = c.add(new Coord(dir));
@@ -46,18 +46,21 @@ public class World {
     }
     
     /**
-     * Get weak power inputs to a location (the kind that will power a wire)
+     * Get weak power inputs to a location (the kind that will power a wire).
+     * 
+     * This also seems to be the kind of power that turns off a torch, 
+     * mysteriously.  ???
      * @param c
      * @return level of input
      */
-    public int indirectPowerInput(Coord c) {
+    public int weakPowerInput(Coord c) {
         int maxWeakInput = 0;
         for (int dir = 0; dir < 6; dir++) {
             Coord inputLoc = c.add(new Coord(dir));
             
             if (getBlock(inputLoc).block().id == Block.BlockID.BLOCK) {
                 // power from leakage from strong input to block
-                maxWeakInput = Math.max(maxWeakInput, strongInput(inputLoc));
+                maxWeakInput = Math.max(maxWeakInput, strongPowerInput(inputLoc));
             } else {
                 // power from weak output
                 maxWeakInput = Math.max(maxWeakInput, getBlock(inputLoc).weakPower(dir ^ 1));
@@ -65,5 +68,14 @@ public class World {
         }
         
         return maxWeakInput;
+    }
+    
+    /**
+     * Is this coordinate receiving any sort of power from any neighbors?
+     * @param c
+     * @return 
+     */
+    public boolean isPowered(Coord c) {
+        return weakPowerInput(c) > 0 || strongPowerInput(c) > 0;
     }
 }
