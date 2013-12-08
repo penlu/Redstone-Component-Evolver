@@ -39,7 +39,8 @@ public class RSPopulation implements Population<RSStatistics> {
      * Randomly generate size genomes and stick them in a population together.
      * @param size 
      */
-    public RSPopulation(int size) {
+    public RSPopulation(int size, RSEvaluation e) {
+        eval = e;
         population = new ArrayList<Candidate>(size);
         
         for (int i = 0; i < size; i++) {
