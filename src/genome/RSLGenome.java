@@ -71,10 +71,12 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         // copy rules into g
         g.rules = new ArrayList<Rule>(rules.size());
         for (int i = 0; i < rules.size(); i++) {
-            g.rules.add(rules.get(i).copy());
+            Rule copy = rules.get(i).copy();
+            g.rules.add(copy);
+            
+            // TODO repair abstract symbols in copied rules to new hierarchy
+            
         }
-        
-        // TODO repair abstract symbols in copied rules to new hierarchy
         
         return g;
     }
@@ -133,11 +135,6 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             int modpos = (int)(Math.random() * rules.get(rulen).rhs.getElements().size());
             int modsize = poisson(3, Math.random() * 0.6 + 0.4);
             
-            // pull sequence out to form new rule
-            Sequence<Module> newrule = rules.get(rulen).rhs.remove(modpos, modsize);
-            
-            // TODO also pull out all equal sequences...
-            
             // produce new abstract module for new rule lhs
             AbstractModule abs = new AbstractModule(hierarchy);
             
@@ -149,7 +146,27 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 }
             }
             
-            // store rule
+            // pull sequence out to form new rule
+            Sequence<Module> newrule = rules.get(rulen).rhs.remove(modpos, modsize);
+            
+            // replace with new abstract module
+            rules.get(rulen).rhs.insert(abs, modpos);
+            
+            // also find all equal sequences
+            int match = 0;
+            ArrayList<Integer> matches = new ArrayList<Integer>();
+            while (match < rules.get(rulen).rhs.getElements().size()) {
+                match = rules.get(rulen).rhs.match(newrule, match);
+                matches.add(match);
+            }
+            
+            // pull out and replace equal sequences
+            for (int i = matches.size() - 1; i >= 0; i--) { // backwards to avoid disrupting indices
+                rules.get(rulen).rhs.remove(i, modsize);
+                rules.get(rulen).rhs.insert(abs, i);
+            }
+            
+            // store newly formed rule
             rules.add(new Rule(abs, newrule));
         } else { // substitution
             // find abstract symbol preceding this lhs, removing this lhs from hierarchy
@@ -171,7 +188,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 }
             }
             
-            // apply selected rule to rhs of previous rule
+            // apply this rule to rhs of previous rule
             rules.get(rulen).apply(target.rhs);
         }
     }
