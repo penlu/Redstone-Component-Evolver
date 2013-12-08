@@ -27,15 +27,15 @@ public class AirBlockState implements BlockState {
         return new ArrayList<Coord>();
     }
 
-    public boolean indirectPower() {
-        return false;
-    }
-
     public int weakPower(int dir) {
         return 0;
     }
 
     public int strongPower(int dir) {
         return 0;
+    }
+    
+    public boolean connectable(int dir) {
+        return false;
     }
 }

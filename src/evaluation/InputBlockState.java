@@ -44,15 +44,15 @@ public class InputBlockState implements BlockState {
         return neighbors;
     }
 
-    public boolean indirectPower() {
-        return state > 0;
-    }
-
     public int weakPower(int dir) {
         return state;
     }
 
     public int strongPower(int dir) {
         return 0;
+    }
+    
+    public boolean connectable(int dir) {
+        return true;
     }
 }

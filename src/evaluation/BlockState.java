@@ -26,14 +26,6 @@ public interface BlockState {
     public ArrayList<Coord> update(World world, Coord loc);
     
     /**
-     * Is this block emitting indirect power?
-     * 
-     * (if the block is receiving weak/strong power, then yes)
-     * @return 
-     */
-    public boolean indirectPower();
-    
-    /**
      * Is this block emitting weak power in this direction?
      * 
      * (If this block is intrinsically powered, or else is receiving strong power)
@@ -50,4 +42,15 @@ public interface BlockState {
      * @return level of emitted strong power?
      */
     public int strongPower(int dir);
+    
+    /**
+     * Can this block be connected to from the given direction?
+     * 
+     * Exclusively for redstone wire connectivities.
+     * 
+     * A direction parameter of -1 indicates different altitudes.
+     * @param dir
+     * @return 
+     */
+    public boolean connectable(int dir);
 }

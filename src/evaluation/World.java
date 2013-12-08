@@ -30,11 +30,11 @@ public class World {
     }
     
     /**
-     * Get strong power remnant "leaking" out of a block.
+     * Get strong power into a block.
      * @param c
      * @return 
      */
-    public int blockLeakage(Coord c) {
+    public int strongInput(Coord c) {
         int leakage = 0;
         for (int dir = 0; dir < 6; dir++) {
             Coord inputLoc = c.add(new Coord(dir));
@@ -50,14 +50,14 @@ public class World {
      * @param c
      * @return level of input
      */
-    public int highestWeakInput(Coord c) {
+    public int indirectPowerInput(Coord c) {
         int maxWeakInput = 0;
         for (int dir = 0; dir < 6; dir++) {
             Coord inputLoc = c.add(new Coord(dir));
             
             if (getBlock(inputLoc).block().id == Block.BlockID.BLOCK) {
                 // power from leakage from strong input to block
-                maxWeakInput = Math.max(maxWeakInput, blockLeakage(inputLoc));
+                maxWeakInput = Math.max(maxWeakInput, strongInput(inputLoc));
             } else {
                 // power from weak output
                 maxWeakInput = Math.max(maxWeakInput, getBlock(inputLoc).weakPower(dir ^ 1));
