@@ -23,7 +23,7 @@ public class WireBlockState implements BlockState {
     }
 
     public Block block() {
-        return block;
+        return new Block(block.id, level);
     }
     
     private int neighborWireInputs(World world, Coord loc) {
@@ -33,19 +33,19 @@ public class WireBlockState implements BlockState {
             
             // neighboring on same level
             if (world.getBlock(ngbloc).block().id == Block.BlockID.WIRE) {
-                maxInput = Math.max(maxInput, 0); // TODO how to get wire info from wires?
+                maxInput = Math.max(maxInput, world.getBlock(ngbloc).block().data);
             }
             
             // neighboring blocks below
             if (world.getBlock(ngbloc).block().id == Block.BlockID.AIR
              && world.getBlock(ngbloc.add(new Coord(0, -1, 0))).block().id == Block.BlockID.WIRE) {
-                maxInput = Math.max(maxInput, 0);
+                maxInput = Math.max(maxInput, world.getBlock(ngbloc.add(new Coord(0, -1, 0))).block().data);
             }
             
             // neighboring blocks above
             if (world.getBlock(loc.add(new Coord(0, 1, 0))).block().id == Block.BlockID.AIR
              && world.getBlock(ngbloc.add(new Coord(0, 1, 0))).block().id == Block.BlockID.WIRE) {
-                maxInput = Math.max(maxInput, 0);
+                maxInput = Math.max(maxInput, world.getBlock(ngbloc.add(new Coord(0, 1, 0))).block().data);
             }
         }
         
@@ -99,8 +99,10 @@ public class WireBlockState implements BlockState {
             
             // update all neighbors!
             ArrayList<Coord> toUpdate = new ArrayList<Coord>();
-            for (int dir = 0; dir < 6; dir++) {
+            for (int dir = 2; dir < 6; dir++) {
                 toUpdate.add(new Coord(dir));
+                toUpdate.add(new Coord(dir).add(new Coord(0, 1, 0)));
+                toUpdate.add(new Coord(dir).add(new Coord(0, -1, 0)));
             }
             return toUpdate;
         } else {
@@ -108,8 +110,12 @@ public class WireBlockState implements BlockState {
         }
     }
     
-    public int weakPower(int dir) {
-        if (connections[dir]) { // power to below or sides
+    public int weakPower(int dir) { // TODO
+        if (dir == 0 || connections[dir]) { // power radiates downwards
+            return level;
+        }
+        if (connections[dir ^ 1] && !(connections[dir ^ 2] || connections[dir ^ 3])) {
+            // wire cannot turn away to deliver power
             return level;
         } else {
             return 0;
@@ -117,8 +123,7 @@ public class WireBlockState implements BlockState {
     }
     
     public int strongPower(int dir) {
-        // um... replicating strange code in Minecraft source; I don't trust this
-        return weakPower(dir); // TODO testing!
+        return 0;
     }
     
     public boolean connectable(int dir) {

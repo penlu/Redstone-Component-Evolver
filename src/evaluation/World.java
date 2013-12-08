@@ -35,14 +35,14 @@ public class World {
      * @return 
      */
     public int strongPowerInput(Coord c) {
-        int leakage = 0;
+        int maxStrongInput = 0;
         for (int dir = 0; dir < 6; dir++) {
             Coord inputLoc = c.add(new Coord(dir));
             // power from strong outputs
-            leakage = Math.max(leakage, getBlock(inputLoc).strongPower(dir ^ 1));
+            maxStrongInput = Math.max(maxStrongInput, getBlock(inputLoc).strongPower(dir ^ 1));
         }
         
-        return leakage;
+        return maxStrongInput;
     }
     
     /**
@@ -59,7 +59,7 @@ public class World {
             Coord inputLoc = c.add(new Coord(dir));
             
             if (getBlock(inputLoc).block().id == Block.BlockID.BLOCK) {
-                // power from leakage from strong input to block
+                // power from leakage from strong input into a block
                 maxWeakInput = Math.max(maxWeakInput, strongPowerInput(inputLoc));
             } else {
                 // power from weak output
