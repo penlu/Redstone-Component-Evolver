@@ -136,6 +136,8 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             // pull sequence out to form new rule
             Sequence<Module> newrule = rules.get(rulen).rhs.remove(modpos, modsize);
             
+            // TODO also pull out all equal sequences...
+            
             // produce new abstract module for new rule lhs
             AbstractModule abs = new AbstractModule(hierarchy);
             
@@ -175,11 +177,12 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     }
 
     private void mutateRule(Rule rule) {
+        // select size of modification TODO don't permit edge runoff
+        int modsize = poisson(1, Math.random() / 2 + 0.5);
+        
         // select type of modification
         int modchoice = (int)(Math.random() * 3);
         
-        // select size of modification
-        int modsize = poisson(1, Math.random() / 2 + 0.5);
         switch (modchoice) {
             case 0: // insertion
                 // location: random quantity leq length
