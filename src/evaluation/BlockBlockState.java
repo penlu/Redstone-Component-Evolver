@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Anne
+ * @author Eric Lu <penlume@gmail.com>
  */
 public class BlockBlockState implements BlockState {
     private Block block;

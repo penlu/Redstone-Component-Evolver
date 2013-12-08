@@ -153,9 +153,11 @@ public class Simulation {
         } // we're just going to assume the updates are not order-dependent...
         
         // set inputs on blocks defined in init
-        for (int i = 0; i < inputblocks.size(); i++) {
-            if (i < inputs.length) {
-                inputblocks.get(i).setState(inputs[i]);
+        if (inputs != null) {
+            for (int i = 0; i < inputblocks.size(); i++) {
+                if (i < inputs.length) {
+                    inputblocks.get(i).setState(inputs[i]);
+                }
             }
         }
     }

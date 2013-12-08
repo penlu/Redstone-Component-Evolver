@@ -9,7 +9,7 @@ package statistics;
 /**
  * Produced by a population; used to carry information about a population out 
  * of the population object.
- * @author Anne
+ * @author Eric Lu <penlume@gmail.com>
  */
 public interface Statistics {
     /**

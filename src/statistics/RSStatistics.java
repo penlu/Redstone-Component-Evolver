@@ -6,10 +6,30 @@
 
 package statistics;
 
+import genome.RSLGenome;
+
 /**
- *
- * @author Anne
+ * Carries statistics for redstone evolver.
+ * @author Eric Lu <penlume@gmail.com>
  */
 public class RSStatistics implements Statistics {
-    // TODO
+    private double avg; // average fitness
+    private double std; // standard deviation of fitness
+    private RSLGenome gen; // best genome this generation
+    
+    public RSStatistics(double avg, double std, RSLGenome gen) {
+        this.avg = avg;
+        this.std = std;
+        this.gen = gen;
+    }
+    
+    public String getText(int verbosity) { // verbosity doesn't matter
+        StringBuilder builder = new StringBuilder();
+        builder.append("average fitness: " + avg + "\n");
+        builder.append("std dev fitness: " + std + "\n");
+        builder.append("best genome: \n");
+        // TODO append best genome
+        
+        return builder.toString();
+    }
 }
