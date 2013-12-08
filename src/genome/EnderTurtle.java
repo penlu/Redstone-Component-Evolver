@@ -16,11 +16,11 @@ import java.util.TreeMap;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class EnderTurtle {
-    public static class AbstractModule implements Module {
-        public final int level; // abstraction level of this module
+    public static class AbstractModule implements Module, Comparable<AbstractModule> {
+        public final ArrayList<AbstractModule> hierarchy; // list of abstract modules in order of decreasing abstraction
 
-        public AbstractModule(int level) {
-            this.level = level;
+        public AbstractModule(ArrayList<AbstractModule> h) {
+            hierarchy = h;
         }
 
         public boolean equals(Object o) {
@@ -29,7 +29,22 @@ public class EnderTurtle {
             }
 
             AbstractModule am = (AbstractModule)o;
-            return level == am.level;
+            return this == am;
+        }
+        
+        public int compareTo(AbstractModule am) {
+            if (am.equals(this)) {
+                return 0;
+            }
+            for (int i = 0; i < hierarchy.size(); i++) {
+                if (hierarchy.get(i) == am) {
+                    return -1; // am is more alpha on hierarchy; this item is less abstract; higher index -> more concrete
+                }
+                if (hierarchy.get(i) == this) {
+                    return 1; // this is more alpha on hierarchy; lower index for this item -> more abstract
+                }
+            }
+            return 1; // not on hierarchy: assumed infinitely unabstract
         }
     }
     
@@ -69,6 +84,28 @@ public class EnderTurtle {
         public boolean equals(Object o) {
             return false;
         }
+    }
+    
+    /**
+     * Returns a randomly chosen concrete module.
+     * @return 
+     */
+    public static Module randomModule() {
+        int choice = (int)(Math.random() * 5);
+        switch (choice) {
+            case 0:
+                return new BlockModule(Block.randomBlock(), (int)(Math.random() * 6));
+            case 1:
+                return new PushModule();
+            case 2:
+                return new PopModule();
+            case 3:
+                return new InputModule();
+            case 4:
+                return new OutputModule();
+        }
+        
+        return null; // something is wrong if you have reached this
     }
 
     /**

@@ -59,6 +59,22 @@ public class Sequence<E> {
         return new Sequence((ArrayList<E>)elements.subList(begin, end));
     }
     
+    public boolean equals(Sequence s) {
+        // length check
+        if (s.getElements().size() != elements.size()) {
+            return false;
+        }
+        
+        // check every element for equality
+        for (int i = 0; i < s.getElements().size(); i++) {
+            if (s.getElements().get(i) != elements.get(i)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     /**
      * Returns the index of the first character of the first complete match of 
      * the sequence s after the index given by begin.

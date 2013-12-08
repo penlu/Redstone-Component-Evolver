@@ -28,6 +28,22 @@ public class Block {
             }
         }
     }
+    
+    public static Block randomBlock() {
+        int choice = (int)(Math.random() * 4);
+        switch (choice) {
+            case 0:
+                return new Block(BlockID.AIR, 0);
+            case 1:
+                return new Block(BlockID.WIRE, 0);
+            case 2:
+                return new Block(BlockID.TORCH, (int)(Math.random() * 5 + 1));
+            case 3:
+                return new Block(BlockID.BLOCK, 0);
+        }
+        
+        return null; // something is wrong if you have gotten here
+    }
 
     public Block(BlockID id, int data) {
         this.id = id;

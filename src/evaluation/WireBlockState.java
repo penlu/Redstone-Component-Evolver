@@ -110,7 +110,7 @@ public class WireBlockState implements BlockState {
         }
     }
     
-    public int weakPower(int dir) { // TODO
+    public int weakPower(int dir) {
         if (dir == 0 || connections[dir]) { // power radiates downwards
             return level;
         }

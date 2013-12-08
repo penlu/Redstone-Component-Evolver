@@ -16,12 +16,15 @@ import java.util.ArrayList;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
-    Sequence<Module> axiom; // starting axiom for intertype translation
-    ArrayList<ArrayList<Rule>> batches; // list of batches of rules
+    ArrayList<Rule> rules; // list of rules
+    ArrayList<EnderTurtle.AbstractModule> hierarchy; // abstraction hierarchy, decreasing order of abstraction
     
     public RSLGenome() {
-        axiom = new Sequence<Module>();
-        batches = new ArrayList<ArrayList<Rule>>();
+        rules = new ArrayList<Rule>();
+        hierarchy = new ArrayList<EnderTurtle.AbstractModule>();
+        
+        // add axiomatic symbol to hierarchy
+        hierarchy.add(new EnderTurtle.AbstractModule(hierarchy));
     }
     
     /**
@@ -39,13 +42,11 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
      */
     public RSLGenome copy() {
         RSLGenome g = new RSLGenome();
-        g.axiom = axiom.copy();
-        g.batches = new ArrayList<ArrayList<Rule>>(batches.size());
-        for (int i = 0; i < batches.size(); i++) {
-            g.batches.add(i, new ArrayList<Rule>(batches.get(i).size()));
-            for (int j = 0; j < batches.get(i).size(); i++) {
-                g.batches.get(i).add(j, batches.get(i).get(j).copy());
-            }
+        // TODO copy hierarchy into g
+        
+        g.rules = new ArrayList<Rule>(rules.size());
+        for (int i = 0; i < rules.size(); i++) {
+            g.rules.add(rules.get(i).copy());
         }
         
         return g;
@@ -57,40 +58,27 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     */
     public RSPhenotype toPhenotype() {
         // translate axiom to final intertype
-        Sequence<Module> inter = axiom.copy();
-        for (int i = 0; i < batches.size(); i++) {
-            ArrayList<Rule> batch = batches.get(i);
-            Sequence<Integer> mask = new Sequence(inter.getElements().size(), 0);
-            for (int j = 0; j < batch.size(); j++) {
-                batch.get(j).apply(inter, mask);
+        Sequence<Module> inter = new Sequence<Module>(1, hierarchy.get(0)); // axiomatic symbol
+        boolean change = true;
+        while (change) {
+            Sequence<Module> original = inter.copy();
+            for (int i = 0; i < rules.size(); i++) {
+                Rule rule = rules.get(i);
+                rule.apply(inter);
             }
+            change = !original.equals(inter);
         }
         
         // convert intertype sequence to phenotype
         return EnderTurtle.process(inter);
     }
     
-    private void modify(Sequence<Module> s) {
-        // TODO!
-        // literally the only thing that makes sense is to delegate the modifications to the Sequence class
-    }
-    
     /**
      * Performs some mutation on this genome.
      * 
      * Mutations may be one of the following:
-     *  - axiom modification
      *  - rule modification
-     * 
      *  - rule substitution/factorization
-     * 
-     *  - rule deletion
-     *  - rule duplication
-     *  - rule order changing
-     *  - rule batch changing
-     * 
-     *  - batch splitting
-     *  - batch merging
      * 
      * Modification encompasses one of:
      *  - single base insertion/deletion
@@ -100,58 +88,11 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
      * @return
      */
     public void mutate() { // TODO
-        // weighted mutation probabilities!
-        if (Math.random() < 0.9) {
-            // select a rule / modify the axiom
-            
-            // aggregating rules
-            ArrayList<Rule> rules = new ArrayList<Rule>();
-            // super hacky backtrack solution
-            ArrayList<Integer> batchnums = new ArrayList<Integer>();
-            ArrayList<Integer> batchindex = new ArrayList<Integer>();
-            for (int i = 0; i < batches.size(); i++) {
-                for (int j = 0; j < batches.get(i).size(); j++) {
-                    rules.add(batches.get(i).get(j));
-                    batchnums.add(i);
-                    batchindex.add(j);
-                }
-            }
-            
-            int sel = (int)(Math.random() * (rules.size() + 1));
-            if (sel == rules.size()) {
-                // modify axiom
-                modify(axiom);
-            } else {
-                Rule r = rules.get(sel);
-                // modify indexed rule
-                if (Math.random() < 0.3) {
-                    // modify lhs
-                    modify(r.lhs);
-                    if (r.lhs.getElements().isEmpty()) { // remove rule!
-                        // hacky solution
-                        batches.get(batchnums.get(sel)).remove((int)batchindex.get(sel));
-                    }
-                } else {
-                    // modify rhs
-                    modify(r.rhs);
-                }
-            }
-        } else {
-            // TODO batch-level modification
-            double op = Math.random();
-            if (op < 0.2) {
-                // perform a substitution
-                
-            } else if (op < 0.4) {
-                // delete a rule
-            } else if (op < 0.6) {
-                // duplicate a rule
-            } else if (op < 0.8) {
-                // switch two rules
-            } else {
-                // move a rule to another batch
-            }
-        }
+        // select rule to modify
+        int rulenum = (int)(Math.random() * rules.size());
+        
+        // select a modification TODO
+        
     }
     
     /**
