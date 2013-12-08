@@ -4,16 +4,12 @@
  * and open the template in the editor.
  */
 
-package evaluation;
-
-import evolver.RSPhenotype;
+package statistics;
 
 /**
  *
  * @author Anne
  */
-public class RSEvaluation implements Evaluation<RSPhenotype> {
-    public double evaluate(RSPhenotype p) {
-        // TODO
-    }
+public class RSStatistics implements Statistics {
+    // TODO
 }
