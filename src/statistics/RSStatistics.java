@@ -27,8 +27,6 @@ public class RSStatistics implements Statistics {
         StringBuilder builder = new StringBuilder();
         builder.append("average fitness: " + avg + "\n");
         builder.append("std dev fitness: " + std + "\n");
-        builder.append("best genome: \n");
-        // TODO append best genome
         
         return builder.toString();
     }
