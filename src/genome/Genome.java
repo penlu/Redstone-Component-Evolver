@@ -29,13 +29,4 @@ public interface Genome<G extends Genome<G, P>, P extends Phenotype> {
      * @return
      */
     public void mutate();
-    
-    /**
-     * Crosses two genomes over to produce some offspring.
-     * 
-     * Does not apply mutations to the result.
-     * @param g
-     * @return
-     */
-    public G crossover(G g);
 }

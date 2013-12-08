@@ -52,7 +52,14 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     * @param s a rough measure of the complexity of the genome to generate
     */
     public RSLGenome(int s) {
-        // TODO
+        rules = new ArrayList<Rule>();
+        hierarchy = new ArrayList<AbstractModule>();
+        hierarchy.add(new AbstractModule(hierarchy));
+        for (int i = 0; i < s; i++) {
+            for (int j = 0; j < 20; j++) {
+                mutate();
+            }
+        }
     }
     
     /**
@@ -65,17 +72,36 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         // copy hierarchy into g
         g.hierarchy = new ArrayList<AbstractModule>();
         for (int i = 0; i < hierarchy.size(); i++) {
-            hierarchy.add(new AbstractModule(g.hierarchy));
+            g.hierarchy.add(new AbstractModule(g.hierarchy));
         }
         
         // copy rules into g
         g.rules = new ArrayList<Rule>(rules.size());
         for (int i = 0; i < rules.size(); i++) {
             Rule copy = rules.get(i).copy();
+            
+            // repair abstract symbols in copied rules to new hierarchy
+            
+            // find every abstract symbol
+            for (int s = 0; s < hierarchy.size(); s++) {
+                int match = 0;
+                while (match < copy.rhs.getElements().size()) {
+                    // replace with symbol in same location in new hierarchy
+                    copy.rhs.remove(match, 1);
+                    copy.rhs.insert(g.hierarchy.get(s), match);
+                }
+            }
+            
+            // also treat lhs
+            for (int s = 0; s < hierarchy.size(); s++) {
+                if (copy.lhs == hierarchy.get(s)) {
+                    copy = new Rule(g.hierarchy.get(s), copy.rhs);
+                    break;
+                }
+            }
+            
+            // add copy
             g.rules.add(copy);
-            
-            // TODO repair abstract symbols in copied rules to new hierarchy
-            
         }
         
         return g;
@@ -194,7 +220,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     }
 
     private void mutateRule(Rule rule) {
-        // select size of modification TODO don't permit edge runoff
+        // select size of modification
         int modsize = poisson(1, Math.random() / 2 + 0.5);
         
         // select type of modification
@@ -239,17 +265,5 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 rule.rhs.insert(rule.rhs.subsequence(duploc, modsize), duploc);
                 break;
         }
-    }
-    
-    /**
-     * Crosses two genomes over to produce some offspring.
-     * 
-     * Does not apply mutations to the result.
-     * @param g
-     * @return
-     */
-    public RSLGenome crossover(RSLGenome g) {
-        // TODO
-        return copy();
     }
 }

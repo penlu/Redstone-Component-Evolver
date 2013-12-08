@@ -113,7 +113,7 @@ public class EnderTurtle {
      * @param s sequence program to run
      * @return phenotype constructed from sequence
      */
-    public static RSPhenotype process(Sequence<Module> s) { // TODO
+    public static RSPhenotype process(Sequence<Module> s) {
         ArrayList<Module> bases = s.getElements();
         
         TreeMap<Coord, Block> parts = new TreeMap<Coord, Block>();
