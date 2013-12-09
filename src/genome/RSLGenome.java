@@ -219,10 +219,10 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 rules.get(rulen).rhs.insert(abs, i);
             }
             
-            // store newly formed rule
-            rules.add(new Rule(abs, newrule));
+            // store newly formed rule after rule from which it was factorized
+            rules.add(rulen + 1, new Rule(abs, newrule));
         } else { // substitution
-            // select rule to substitute
+            // select rule to substitute into preceding rule
             int rulen = (int)(Math.random() * rules.size() - 1) + 1; // any nonzero
             
             // find abstract symbol preceding this lhs, removing this lhs from hierarchy
@@ -235,6 +235,9 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 }
             }
             
+            // remove this rule from list of rules
+            Rule mod = rules.remove(rulen);
+            
             // find rule with prec abstract symbol so find the rule preceding this rule
             Rule target = null; // TODO bug: somehow, no rule with appropriate lhs is getting found
             for (int i = 0; i < rules.size(); i++) {
@@ -244,8 +247,8 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 }
             }
             
-            // apply this rule to rhs of previous rule
-            rules.get(rulen).apply(target.rhs);
+            // apply the removed rule to rhs of previous rule
+            mod.apply(target.rhs);
         }
     }
 
