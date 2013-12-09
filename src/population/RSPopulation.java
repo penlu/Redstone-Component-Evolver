@@ -64,6 +64,7 @@ public class RSPopulation implements Population<RSStatistics> {
     }
     
     public void generation() {
+        System.out.println(population.size());
         // take out three worst
         for (int i = 0; i < 3; i++) {
             population.remove(population.size() - 1);
@@ -72,7 +73,7 @@ public class RSPopulation implements Population<RSStatistics> {
         // select from remaining population
         ArrayList<RSLGenome> selections = new ArrayList<RSLGenome>();
         for (int i = 0; i < 3; i++) {
-            selections.add(population.get((int)(Math.random()*population.size())).genome);
+            selections.add(population.get((int)(Math.random() * population.size())).genome);
         }
         
         // add back with mutations
@@ -83,12 +84,14 @@ public class RSPopulation implements Population<RSStatistics> {
             
             // add at proper location to maintain sorted
             boolean inserted = false;
-            if (c.fitness >= population.get(i).fitness) {
-                population.add(i, c);
-                inserted = true;
-                break;
+            for (int j = 0; j < population.size(); j++) {
+                if (c.fitness >= population.get(j).fitness) {
+                    population.add(j, c);
+                    inserted = true;
+                    break;
+                }
             }
-            // add at end if not added
+            // add at end if not added (this genome is really bad)
             if (!inserted) {
                 population.add(c);
             }

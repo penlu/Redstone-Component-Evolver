@@ -27,7 +27,7 @@ public class Main {
     private static int gen = 0;
     
     private static void output(RSStatistics s) {
-        String out = s.getText(0);
+        /*String out = s.getText(0);
         
         File outfile = new File("outputs\\generation" + gen + ".txt");
         try {
@@ -42,7 +42,8 @@ public class Main {
         } catch (Exception e) {
             System.out.println("could not create an output file!");
             System.exit(-1);
-        }
+        }*/ // TODO: outputs to file!
+        System.out.println(s.getText(0));
     }
 
     /**
