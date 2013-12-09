@@ -11,6 +11,26 @@ package evolver;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class Coord implements Comparable<Coord> {
+    /**
+     * Returns a coordinate with maximum elements from each given coordinate
+     * @param a
+     * @param b
+     * @return 
+     */
+    public static Coord max(Coord a, Coord b) {
+        return new Coord(Math.max(a.x, b.x), Math.max(a.y, b.y), Math.max(a.z, b.z));
+    }
+    
+    /**
+     * Returns a coordinate with minimum elements from each given coordinate
+     * @param a
+     * @param b
+     * @return 
+     */
+    public static Coord min(Coord a, Coord b) {
+        return new Coord(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.min(a.z, b.z));
+    }
+    
     public final int x;
     public final int y;
     public final int z;

@@ -26,9 +26,10 @@ public class RSPhenotype implements Phenotype {
     private ArrayList<Coord> outputs;
 
     /**
-     * Process a sequence, running it as a program to construct a new phenotype.
-     * @param s sequence program to run
-     * @return phenotype constructed from sequence
+     * Phenotype constructed from list of parts, input, and output
+     * @param partlist
+     * @param inputs
+     * @param outputs 
      */
     public RSPhenotype(Map<Coord, Block> partlist,
                        ArrayList<Coord> inputs, ArrayList<Coord> outputs) {
@@ -36,7 +37,7 @@ public class RSPhenotype implements Phenotype {
         // find part position bounds
         Coord min;
         Coord max;
-        if (partlist.size() != 0) {
+        if (!partlist.isEmpty()) {
             min = new Coord(partlist.entrySet().iterator().next().getKey());
             max = new Coord(partlist.entrySet().iterator().next().getKey());
         } else {
@@ -45,26 +46,20 @@ public class RSPhenotype implements Phenotype {
         }
         for (Map.Entry<Coord, Block> entry : partlist.entrySet()) {
             // track min coord
-            if (entry.getKey().x < min.x) {
-                min = new Coord(entry.getKey().x, min.y, min.z);
-            }
-            if (entry.getKey().y < min.y) {
-                min = new Coord(min.x, entry.getKey().y, min.z);
-            }
-            if (entry.getKey().z < min.z) {
-                min = new Coord(min.x, min.y, entry.getKey().z);
-            }
+            min = Coord.min(min, entry.getKey());
             
             // track max coord
-            if (entry.getKey().x > max.x) {
-                max = new Coord(entry.getKey().x, max.y, max.z);
-            }
-            if (entry.getKey().y > max.y) {
-                max = new Coord(max.x, entry.getKey().y, max.z);
-            }
-            if (entry.getKey().z > max.z) {
-                max = new Coord(max.x, max.y, entry.getKey().z);
-            }
+            max = Coord.max(max, entry.getKey());
+        }
+        
+        // also include inputs and outputs in coord tracking
+        for (Coord in : inputs) {
+            min = Coord.min(min, in);
+            max = Coord.max(max, in);
+        }
+        for (Coord out : outputs) {
+            min = Coord.min(min, out);
+            max = Coord.max(max, out);
         }
         
         // copy parts into array
