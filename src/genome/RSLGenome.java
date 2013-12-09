@@ -227,7 +227,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             int rulen = (int)(Math.random() * rules.size() - 1) + 1; // any nonzero
             
             // find abstract symbol preceding this lhs, removing this lhs from hierarchy
-            AbstractModule prec = null; // TODO bug: somehow, this symbol sometimes does not exist
+            AbstractModule prec = null;
             for (int i = 0; i < hierarchy.size(); i++) {
                 if (hierarchy.get(i) == rules.get(rulen).lhs) {
                     prec = hierarchy.get(i - 1);
@@ -240,7 +240,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             Rule mod = rules.remove(rulen);
             
             // find rule with prec abstract symbol so find the rule preceding this rule
-            Rule target = null; // TODO bug: somehow, no rule with appropriate lhs is getting found
+            Rule target = null;
             for (int i = 0; i < rules.size(); i++) {
                 if (rules.get(i).lhs == prec) {
                     target = rules.get(i);
@@ -284,7 +284,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                     if (mod == null) {
                         seq.insert(EnderTurtle.randomConcreteModule(), seq.getElements().size());
                     } else {
-                        seq.insert(syms.get(i), seq.getElements().size());
+                        seq.insert(mod, seq.getElements().size());
                     }
                 }
                 

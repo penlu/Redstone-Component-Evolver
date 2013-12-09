@@ -40,7 +40,7 @@ public class Sequence<E> {
      * Produces a copy of this sequence
      * @return 
      */
-    public Sequence copy() {
+    public Sequence<E> copy() {
         return new Sequence(elements);
     }
     
@@ -55,7 +55,7 @@ public class Sequence<E> {
      * @param end
      * @return
      */
-    public Sequence subsequence(int begin, int end) {
+    public Sequence<E> subsequence(int begin, int end) {
         ArrayList<E> sublist = new ArrayList<E>();
         for (int i = begin; i < end; i++) {
             if (0 < i && i < elements.size()) {
@@ -63,10 +63,10 @@ public class Sequence<E> {
             }
         }
         
-        return new Sequence(sublist);
+        return new Sequence<E>(sublist);
     }
     
-    public boolean equals(Sequence s) {
+    public boolean equals(Sequence<E> s) {
         // length check
         if (s.getElements().size() != elements.size()) {
             return false;
@@ -92,10 +92,11 @@ public class Sequence<E> {
     public int match(Sequence s, int begin) {
         // naive substring match algorithm
         for (int i = begin, l = elements.size() - s.getElements().size(); i < l; i++) {
+            System.out.println(s.getElements());
             boolean match = true;
             // check if this location matches substring
             for (int j = 0; j < s.getElements().size(); j++) {
-                if (!s.getElements().get(j).equals(elements.get(j + i))) {
+                if (!s.getElements().get(j).equals(elements.get(j + i))) { // TODO bug: something here is null
                     match = false;
                     break;
                 }
@@ -145,7 +146,7 @@ public class Sequence<E> {
      * @param n
      * @return the removed subsequence, or as much of it as was removed
      */
-    public Sequence remove(int i, int n) {
+    public Sequence<E> remove(int i, int n) {
         // bounds check
         if (n < 0) {
             i += n;
@@ -160,7 +161,7 @@ public class Sequence<E> {
         }
         
         // retrieve removed elements
-        Sequence s = new Sequence(new ArrayList<E>(elements.subList(i, i + n)));
+        Sequence<E> s = new Sequence<E>(new ArrayList<E>(elements.subList(i, i + n)));
         
         // remove elements
         for (int x = 0; x < n; x++) {
