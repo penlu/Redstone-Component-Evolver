@@ -40,9 +40,7 @@ public class Rule {
         
         // find and replace matches
         for (int i = 0; i < s.getElements().size(); i++) {
-            System.out.println(s.getElements());
-            boolean derp = true; // breakpoint line
-            if (s.getElements().get(i).equals(lhs)) { // TODO bug: something in this line is null
+            if (s.getElements().get(i).equals(lhs)) {
                 s.remove(i, 1);
                 s.insert(rhs, i);
             }

@@ -92,7 +92,6 @@ public class Sequence<E> {
     public int match(Sequence s, int begin) {
         // naive substring match algorithm
         for (int i = begin, l = elements.size() - s.getElements().size(); i < l; i++) {
-            System.out.println(s.getElements());
             boolean match = true;
             // check if this location matches substring
             for (int j = 0; j < s.getElements().size(); j++) {

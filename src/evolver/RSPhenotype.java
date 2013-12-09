@@ -34,8 +34,15 @@ public class RSPhenotype implements Phenotype {
                        ArrayList<Coord> inputs, ArrayList<Coord> outputs) {
         
         // find part position bounds
-        Coord min = new Coord(partlist.entrySet().iterator().next().getKey());
-        Coord max = new Coord(partlist.entrySet().iterator().next().getKey());
+        Coord min;
+        Coord max;
+        if (partlist.size() != 0) {
+            min = new Coord(partlist.entrySet().iterator().next().getKey()); // TODO bug: what happens when no parts? obvious
+            max = new Coord(partlist.entrySet().iterator().next().getKey());
+        } else {
+            min = new Coord(0, 0, 0);
+            max = new Coord(0, 0, 0);
+        }
         for (Map.Entry<Coord, Block> entry : partlist.entrySet()) {
             // track min coord
             if (entry.getKey().x < min.x) {

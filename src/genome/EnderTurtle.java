@@ -136,6 +136,8 @@ public class EnderTurtle {
                     if (inputs.get(j).equals(pos)) {
                         inputs.remove(j);
                     }
+                }
+                for (int j = 0; j < outputs.size(); j++) {
                     if (outputs.get(j).equals(pos)) {
                         outputs.remove(j);
                     }
