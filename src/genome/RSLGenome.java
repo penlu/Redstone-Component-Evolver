@@ -20,6 +20,11 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     ArrayList<Rule> rules; // list of rules
     ArrayList<AbstractModule> hierarchy; // abstraction hierarchy, decreasing order of abstraction
     
+    /**
+     * Factorial for Poisson distribution generator
+     * @param k
+     * @return 
+     */
     public static int factorial(int k) {
         int res = 1;
         for (int i = 1; i < k; i++) {
@@ -29,6 +34,12 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         return res * k;
     }
     
+    /**
+     * Poisson distribution generator for certain evo purposes.
+     * @param lambda
+     * @param rand a uniform random variable
+     * @return 
+     */
     public static int poisson(double lambda, double rand) {
         int count = 0;
         double factor = Math.exp(-lambda);
@@ -45,6 +56,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         
         // add axiomatic symbol to hierarchy
         hierarchy.add(new AbstractModule(hierarchy));
+        rules.add(new Rule(hierarchy.get(0), new Sequence<Module>()));
     }
     
     /**
@@ -198,7 +210,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 matches.add(match);
                 
                 // find next
-                match = rules.get(rulen).rhs.match(newrule, match);
+                match = rules.get(rulen).rhs.match(newrule, match + 1);
             }
             
             // pull out and replace equal sequences
@@ -211,10 +223,10 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             rules.add(new Rule(abs, newrule));
         } else { // substitution
             // select rule to substitute
-            int rulen = (int)(Math.random() * rules.size() - 1); // any nonzero
+            int rulen = (int)(Math.random() * rules.size() - 1) + 1; // any nonzero
             
             // find abstract symbol preceding this lhs, removing this lhs from hierarchy
-            AbstractModule prec = null;
+            AbstractModule prec = null; // TODO bug: somehow, this symbol sometimes does not exist
             for (int i = 0; i < hierarchy.size(); i++) {
                 if (hierarchy.get(i) == rules.get(rulen).lhs) {
                     prec = hierarchy.get(i - 1);
@@ -223,8 +235,8 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 }
             }
             
-            // find rule with prec abstract symbol so preceding this rule
-            Rule target = null;
+            // find rule with prec abstract symbol so find the rule preceding this rule
+            Rule target = null; // TODO bug: somehow, no rule with appropriate lhs is getting found
             for (int i = 0; i < rules.size(); i++) {
                 if (rules.get(i).lhs == prec) {
                     target = rules.get(i);
@@ -280,7 +292,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 break;
             case 2: // duplication
                 int duploc = (int)(Math.random() * rule.rhs.getElements().size());
-                rule.rhs.insert(rule.rhs.subsequence(duploc, modsize), duploc);
+                rule.rhs.insert(rule.rhs.subsequence(duploc, duploc + modsize), duploc);
                 break;
         }
     }
