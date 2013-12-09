@@ -221,13 +221,16 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             // select rule to substitute into preceding rule
             int rulen = (int)(Math.random() * rules.size() - 1) + 1; // any nonzero
             
+            // remove this rule LHS from the hierarchy
             hierarchy.remove(rulen);
             
             // remove this rule from list of rules
             Rule mod = rules.remove(rulen);
             
-            // apply the removed rule to rhs of previous rule
-            mod.apply(rules.get(rulen - 1).rhs);
+            // apply the removed rule to rhs of all previous rules
+            for (int i = 0; i < rulen; i++) {
+                mod.apply(rules.get(i).rhs);
+            }
         }
     }
 
