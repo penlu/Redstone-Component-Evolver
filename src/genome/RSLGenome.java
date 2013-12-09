@@ -87,11 +87,15 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             
             // find every abstract symbol
             for (int s = 0; s < hierarchy.size(); s++) {
-                int match = 0;
+                int match = copy.rhs.match(new Sequence<Module>(1, hierarchy.get(s)), 0);
+                
                 while (match < copy.rhs.getElements().size()) {
                     // replace with symbol in same location in new hierarchy
                     copy.rhs.remove(match, 1);
                     copy.rhs.insert(g.hierarchy.get(s), match);
+                    
+                    // find next symbol
+                    match = copy.rhs.match(new Sequence<Module>(1, hierarchy.get(s)), match + 1);
                 }
             }
             
@@ -187,11 +191,14 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             rules.get(rulen).rhs.insert(abs, modpos);
             
             // also find all equal sequences
-            int match = 0;
+            int match = rules.get(rulen).rhs.match(newrule, 0);
             ArrayList<Integer> matches = new ArrayList<Integer>();
             while (match < rules.get(rulen).rhs.getElements().size()) {
-                match = rules.get(rulen).rhs.match(newrule, match);
+                // store found equal sequence
                 matches.add(match);
+                
+                // find next
+                match = rules.get(rulen).rhs.match(newrule, match);
             }
             
             // pull out and replace equal sequences
