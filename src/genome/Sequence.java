@@ -95,7 +95,7 @@ public class Sequence<E> {
             boolean match = true;
             // check if this location matches substring
             for (int j = 0; j < s.getElements().size(); j++) {
-                if (!s.getElements().get(j).equals(elements.get(j + i))) { // TODO bug: something here is null
+                if (!s.getElements().get(j).equals(elements.get(j + i))) {
                     match = false;
                     break;
                 }

@@ -171,15 +171,18 @@ public class EnderTurtle {
         for (Map.Entry<Coord, Block> entry : parts.entrySet()) {
             Coord mount = entry.getValue().needsMount();
             
-            // check if mount missing
-            Coord mountpos = entry.getKey().add(mount);
-            if (mount != null && !parts.get(mountpos).canMount()) {
-                if (parts.get(entry.getKey()).id == Block.BlockID.AIR) {
-                    // if air space, fill
-                    parts.put(mountpos, new Block(Block.BlockID.BLOCK, 0));
-                } else {
-                    // delete this block
-                    parts.put(entry.getKey(), new Block(Block.BlockID.AIR, 0));
+            if (mount != null) {
+                Coord mountpos = entry.getKey().add(mount);
+                
+                // check if mount missing
+                if (parts.get(mountpos) == null || !parts.get(mountpos).canMount()) {
+                    if (parts.get(entry.getKey()).id == Block.BlockID.AIR) {
+                        // if air space, fill
+                        parts.put(entry.getKey().add(mount), new Block(Block.BlockID.BLOCK, 0));
+                    } else {
+                        // delete this block
+                        parts.put(entry.getKey(), new Block(Block.BlockID.AIR, 0));
+                    }
                 }
             }
         }

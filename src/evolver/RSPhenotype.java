@@ -37,11 +37,11 @@ public class RSPhenotype implements Phenotype {
         Coord min;
         Coord max;
         if (partlist.size() != 0) {
-            min = new Coord(partlist.entrySet().iterator().next().getKey()); // TODO bug: what happens when no parts? obvious
+            min = new Coord(partlist.entrySet().iterator().next().getKey());
             max = new Coord(partlist.entrySet().iterator().next().getKey());
         } else {
             min = new Coord(0, 0, 0);
-            max = new Coord(0, 0, 0);
+            max = new Coord(-1, -1, -1);
         }
         for (Map.Entry<Coord, Block> entry : partlist.entrySet()) {
             // track min coord
@@ -68,7 +68,7 @@ public class RSPhenotype implements Phenotype {
         }
         
         // copy parts into array
-        contents = new Block[max.x - min.x][max.y - min.y][max.z - min.z];
+        contents = new Block[max.x - min.x + 1][max.y - min.y + 1][max.z - min.z + 1];
         for (Map.Entry<Coord, Block> entry : partlist.entrySet()) {
             Coord index = entry.getKey().sub(min);
             contents[index.x][index.y][index.z] = entry.getValue();
