@@ -8,10 +8,13 @@ package evolver;
 import evaluation.RSEvaluation;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import population.RSPopulation;
 import statistics.RSStatistics;
@@ -28,7 +31,7 @@ public class Main {
         
         File outfile = new File("outputs\\generation" + gen + ".txt");
         try {
-            if (!outfile.createNewFile()) {
+            if (!outfile.mkdirs() || !outfile.createNewFile()) {
                 System.out.println("could not create an output file!");
                 System.exit(-1);
             }
@@ -46,29 +49,29 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // load in config
-        CombinatorialFunction functions = null;
+        // load functions for circuit evaluation
+        ArrayList<String> funcs = new ArrayList<String>();
         try {
-            BufferedReader read = new BufferedReader(new InputStreamReader(new FileInputStream(new File("config.txt"))));
+            // get path of config.txt file
+            Path workingDir = Paths.get("").toAbsolutePath();
+            Path config = Paths.get(workingDir.toString() + "\\src\\evolver\\config.txt").toAbsolutePath();
+            
+            // open config.txt file
+            BufferedReader read = Files.newBufferedReader(config, Charset.forName("UTF-8"));
+            
+            // read line by line
             String line;
-            ArrayList<String> funcs = new ArrayList<String>();
             while ((line = read.readLine()) != null) {
                 funcs.add(line);
             }
             read.close();
-            
-            functions = new CombinatorialFunction(funcs);
-            
-            // make output folder
-            File dir = new File("outputs\\");
-            if (!dir.mkdir()) {
-                System.out.println("could not make output folder!");
-                System.exit(-1);
-            }
-        } catch (Exception e) {
-            System.out.println("could not read config.txt!");
+        } catch (IOException e) {
+            System.out.println("Could not read config.txt");
+            System.out.println("Error: " + e.getMessage());
             System.exit(-1);
         }
+        
+        CombinatorialFunction functions = new CombinatorialFunction(funcs);
         
         // make population
         RSPopulation pop = new RSPopulation(100, new RSEvaluation(functions));

@@ -7,6 +7,7 @@ package evolver;
 import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.Stack;
+import java.util.TreeSet;
 
 /**
  *
@@ -18,6 +19,7 @@ public class CombinatorialFunction {
     
     public CombinatorialFunction(ArrayList<String> funcs) {
         this.funcs = funcs;
+        vars = new TreeSet<Character>();
         
         for (int f = 0; f < funcs.size(); f++) {
             for (int c = 0; c < funcs.get(f).length(); c++) {
