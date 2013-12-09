@@ -19,6 +19,10 @@ import java.util.TreeSet;
  * the characters in each expression.  For example if the expressions contain 
  * the characters cfip, the four inputs {T, F, T, T} would cause c -> T, f -> F, 
  * i -> T, p -> T when the expressions are being evaluated.
+ * 
+ * This checks for and DISCARDS any non-valid functions, so you'd better make 
+ * sure that your desired functions are all correct, or you'll evolve circuits 
+ * that aren't making one of the outputs you want!
  * @author Eric Lu <penlume@gmail.com>
  */
 public class CombinatorialFunction {

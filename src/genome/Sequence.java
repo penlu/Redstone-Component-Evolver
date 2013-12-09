@@ -45,7 +45,7 @@ public class Sequence<E> {
     }
     
     public ArrayList<E> getElements() {
-        return (ArrayList<E>)Collections.unmodifiableList(elements);
+        return new ArrayList<E>(elements);
     }
     
     /**
