@@ -46,6 +46,19 @@ public class EnderTurtle {
             }
             return 1; // not on hierarchy: assumed infinitely unabstract
         }
+        
+        public String toString() {
+            // find abstract position in hierarchy
+            int pos = hierarchy.size();
+            for (int i = 0; i < hierarchy.size(); i++) {
+                if (hierarchy.get(i) == this) {
+                    pos = i;
+                    break;
+                }
+            }
+            
+            return "ABS(" + pos + ")";
+        }
     }
     
     public static class BlockModule implements Module {
@@ -60,11 +73,19 @@ public class EnderTurtle {
         public boolean equals(Object o) {
             return false;
         }
+        
+        public String toString() {
+            return "B(" + block.id + ", " + block.data + ", " + move + ")";
+        }
     }
     
     public static class PushModule implements Module {
         public boolean equals(Object o) {
             return false;
+        }
+        
+        public String toString() {
+            return "PUSH";
         }
     }
     
@@ -72,17 +93,29 @@ public class EnderTurtle {
         public boolean equals(Object o) {
             return false;
         }
+        
+        public String toString() {
+            return "POP";
+        }
     }
     
     public static class InputModule implements Module {
         public boolean equals(Object o) {
             return false;
         }
+        
+        public String toString() {
+            return "IN";
+        }
     }
     
     public static class OutputModule implements Module {
         public boolean equals(Object o) {
             return false;
+        }
+        
+        public String toString() {
+            return "OUT";
         }
     }
     

@@ -300,4 +300,14 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 break;
         }
     }
+    
+    public String toString() {
+        // list of rules with abstract symbols replaced with their numbers in the hierarchy
+        StringBuilder out = new StringBuilder();
+        for (int r = 0; r < rules.size(); r++) {
+            out.append(rules.get(r).toString() + "\n");
+        }
+        
+        return out.toString();
+    }
 }

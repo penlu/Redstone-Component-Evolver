@@ -169,4 +169,13 @@ public class Sequence<E> {
         
         return s;
     }
+    
+    public String toString() {
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < elements.size(); i++) {
+            out.append(elements.get(i).toString() + " ");
+        }
+        
+        return out.toString();
+    }
 }

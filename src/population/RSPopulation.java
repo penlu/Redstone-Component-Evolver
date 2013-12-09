@@ -64,7 +64,6 @@ public class RSPopulation implements Population<RSStatistics> {
     }
     
     public void generation() {
-        System.out.println(population.size());
         // take out three worst
         for (int i = 0; i < 3; i++) {
             population.remove(population.size() - 1);
@@ -118,6 +117,6 @@ public class RSPopulation implements Population<RSStatistics> {
         }
         double stdDev = Math.sqrt(sumDevSqd / fitnesses.size());
         
-        return new RSStatistics(average, stdDev, population.get(0).genome);
+        return new RSStatistics(population.size(), average, stdDev, population.get(0).genome, population.get(0).phenome);
     }
 }

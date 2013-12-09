@@ -77,6 +77,7 @@ public class Main {
         // make population
         RSPopulation pop = new RSPopulation(100, new RSEvaluation(functions));
         
+        // TODO: automatically stop on convergence?
         while (true) {
             pop.generation();
             gen++;

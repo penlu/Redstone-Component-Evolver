@@ -46,4 +46,8 @@ public class Rule {
             }
         }
     }
+    
+    public String toString() {
+        return lhs.toString() + " : " + rhs.toString();
+    }
 }
