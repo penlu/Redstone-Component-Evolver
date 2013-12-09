@@ -90,6 +90,11 @@ public class Sequence<E> {
      * @return length of this sequence if no match found
      */
     public int match(Sequence s, int begin) {
+        // null string doesn't match anything
+        if (s.getElements().isEmpty()) {
+            return elements.size();
+        }
+        
         // naive substring match algorithm
         for (int i = begin, l = elements.size() - s.getElements().size(); i < l; i++) {
             boolean match = true;

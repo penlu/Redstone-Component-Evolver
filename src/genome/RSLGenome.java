@@ -190,12 +190,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             AbstractModule abs = new AbstractModule(hierarchy);
             
             // insert new abstract module after this lhs in hierarchy
-            for (int i = 0; i < hierarchy.size(); i++) {
-                if (hierarchy.get(i) == rules.get(rulen).lhs) {
-                    hierarchy.add(i + 1, abs);
-                    break;
-                }
-            }
+            hierarchy.add(rulen + 1, abs);
             
             // pull sequence out to form new rule
             Sequence<Module> newrule = rules.get(rulen).rhs.remove(modpos, modsize);
@@ -226,30 +221,13 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             // select rule to substitute into preceding rule
             int rulen = (int)(Math.random() * rules.size() - 1) + 1; // any nonzero
             
-            // find abstract symbol preceding this lhs, removing this lhs from hierarchy
-            AbstractModule prec = null;
-            for (int i = 0; i < hierarchy.size(); i++) {
-                if (hierarchy.get(i) == rules.get(rulen).lhs) {
-                    prec = hierarchy.get(i - 1);
-                    hierarchy.remove(i);
-                    break;
-                }
-            }
+            hierarchy.remove(rulen);
             
             // remove this rule from list of rules
             Rule mod = rules.remove(rulen);
             
-            // find rule with prec abstract symbol so find the rule preceding this rule
-            Rule target = null;
-            for (int i = 0; i < rules.size(); i++) {
-                if (rules.get(i).lhs == prec) {
-                    target = rules.get(i);
-                    break;
-                }
-            }
-            
             // apply the removed rule to rhs of previous rule
-            mod.apply(target.rhs);
+            mod.apply(rules.get(rulen - 1).rhs);
         }
     }
 
