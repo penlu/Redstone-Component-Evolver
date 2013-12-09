@@ -35,8 +35,8 @@ public class RSStatistics implements Statistics {
         builder.append("std dev fitness: " + std + "\n");
         builder.append("most fit genome: \n");
         builder.append(gen.toString());
-        builder.append("as a phenotype: \n");
-        builder.append(phn.toString());
+        //builder.append("as a phenotype: \n"); // to reduce output size
+        //builder.append(phn.toString());
         
         return builder.toString();
     }

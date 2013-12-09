@@ -26,12 +26,17 @@ public class RSPopulation implements Population<RSStatistics> {
     private class Candidate {
         final RSLGenome genome;
         final RSPhenotype phenome;
-        final double fitness;
+        double fitness;
+        int evaluations;
         
         Candidate (RSLGenome g) {
             genome = g;
             phenome = g.toPhenotype();
             fitness = eval.evaluate(phenome);
+        }
+        
+        void reevaluate() {
+            fitness = (evaluations * fitness + eval.evaluate(phenome)) / (++evaluations);
         }
     }
     
@@ -64,6 +69,11 @@ public class RSPopulation implements Population<RSStatistics> {
     }
     
     public void generation() {
+        // reevaluate
+        for (int i = 0; i < population.size(); i++) {
+            population.get(i).reevaluate();
+        }
+        
         // take out three worst
         for (int i = 0; i < 3; i++) {
             population.remove(population.size() - 1);
