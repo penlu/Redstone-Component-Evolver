@@ -47,6 +47,7 @@ public class Simulation {
     private ArrayList<Coord> scheduled; // components scheduled for updates
     
     private ArrayList<InputBlockState> inputblocks;
+    private ArrayList<Coord> inputlocs;
     private ArrayList<Coord> outputs;
     
     /**
@@ -82,6 +83,7 @@ public class Simulation {
         ArrayList<Coord> inputs = p.getInputs();
         
         // make inputblocks that radiate weak power in all directions
+        inputlocs = inputs;
         inputblocks = new ArrayList<InputBlockState>();
         for (int i = 0; i < inputs.size(); i++) {
             Coord inloc = inputs.get(i);
@@ -150,8 +152,11 @@ public class Simulation {
      * @param inputs 
      */
     public void step(int[] inputs) {
+        ArrayList<Coord> toUpdate = new ArrayList<Coord>(scheduled);
+        scheduled = new ArrayList<Coord>();
+        
         // update by scheduled updates
-        for (Coord c : scheduled) {
+        for (Coord c : toUpdate) {
             update(c);
         } // we're just going to assume the updates are not order-dependent...
         
@@ -160,6 +165,7 @@ public class Simulation {
             for (int i = 0; i < inputblocks.size(); i++) {
                 if (i < inputs.length) {
                     inputblocks.get(i).setState(inputs[i]);
+                    scheduled.add(inputlocs.get(i));
                 }
             }
         }

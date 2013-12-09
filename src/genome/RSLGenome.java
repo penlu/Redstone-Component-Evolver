@@ -162,7 +162,9 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     public void mutate() {
         if (Math.random() < 0.8) {
             // select rule to modify
-            Rule rule = rules.get((int)(Math.random() * rules.size()));
+            int rulen = (int)(Math.random() * rules.size());
+            Rule rule = rules.get(rulen);
+            
             mutateRule(rule);
         } else {
             doSubFac();
@@ -198,7 +200,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             // replace with new abstract module
             rules.get(rulen).rhs.insert(abs, modpos);
             
-            // also find all equal sequences
+            // also find and replace all equal sequences
             int match = rules.get(rulen).rhs.match(newrule, 0);
             ArrayList<Integer> matches = new ArrayList<Integer>();
             while (match < rules.get(rulen).rhs.getElements().size()) {

@@ -85,6 +85,13 @@ public class RSPopulation implements Population<RSStatistics> {
             }
         });
         
+        // ten random swaps?
+        for (int i = 0; i < population.size() / 10; i++) {
+            int a = (int)(Math.random() * population.size());
+            int b = (int)(Math.random() * population.size());
+            Collections.swap(population, a, b);
+        }
+        
         // take out three worst
         for (int i = 0; i < 3; i++) {
             population.remove(population.size() - 1);
