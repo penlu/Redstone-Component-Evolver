@@ -41,10 +41,11 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
      * @return 
      */
     public static int poisson(double lambda, double rand) {
-        int count = 0;
+        int count = -1;
         double factor = Math.exp(-lambda);
         do {
             rand -= Math.pow(lambda, count) / factorial(count) * factor;
+            count++;
         } while (rand > 0);
         
         return count;

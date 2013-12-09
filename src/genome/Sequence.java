@@ -56,7 +56,14 @@ public class Sequence<E> {
      * @return
      */
     public Sequence subsequence(int begin, int end) {
-        return new Sequence(new ArrayList<E>(elements.subList(begin, end)));
+        ArrayList<E> sublist = new ArrayList<E>();
+        for (int i = begin; i < end; i++) {
+            if (0 < i && i < elements.size()) {
+                sublist.add(elements.get(i));
+            }
+        }
+        
+        return new Sequence(sublist);
     }
     
     public boolean equals(Sequence s) {
