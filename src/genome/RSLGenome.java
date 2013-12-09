@@ -52,9 +52,12 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     * @param s a rough measure of the complexity of the genome to generate
     */
     public RSLGenome(int s) {
-        rules = new ArrayList<Rule>();
         hierarchy = new ArrayList<AbstractModule>();
         hierarchy.add(new AbstractModule(hierarchy));
+        
+        rules = new ArrayList<Rule>();
+        rules.add(new Rule(hierarchy.get(0), new Sequence<Module>()));
+        
         for (int i = 0; i < s; i++) {
             for (int j = 0; j < 20; j++) {
                 mutate();
