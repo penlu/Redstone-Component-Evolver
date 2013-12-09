@@ -111,4 +111,28 @@ public class RSPhenotype implements Phenotype {
     public ArrayList<Coord> getOutputs() {
         return outputs;
     }
+    
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (int y = 0; y < contents[0].length; y++) {
+            for (int x = 0; x < contents.length; x++) {
+                for (int z = 0; z < contents[0][0].length; z++) {
+                    Block here = contents[x][y][z];
+                    if (here == null || here.id == Block.BlockID.AIR) {
+                        builder.append(" ");
+                    } else if (here.id == Block.BlockID.WIRE) {
+                        builder.append("+");
+                    } else if (here.id == Block.BlockID.TORCH) {
+                        builder.append("-");
+                    } else if (here.id == Block.BlockID.BLOCK) {
+                        builder.append("#");
+                    }
+                }
+                builder.append("\n");
+            }
+            builder.append("\n");
+        }
+        
+        return builder.toString();
+    }
 }

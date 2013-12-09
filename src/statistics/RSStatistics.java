@@ -14,11 +14,11 @@ import genome.RSLGenome;
  * @author Eric Lu <penlume@gmail.com>
  */
 public class RSStatistics implements Statistics {
-    private int num;
-    private double avg; // average fitness
-    private double std; // standard deviation of fitness
-    private RSLGenome gen; // best genome this generation
-    private RSPhenotype phn; // its genotype
+    private final int num;
+    private final double avg; // average fitness
+    private final double std; // standard deviation of fitness
+    private final RSLGenome gen; // best genome this generation
+    private final RSPhenotype phn; // its genotype
     
     public RSStatistics(int num, double avg, double std, RSLGenome gen, RSPhenotype phn) {
         this.num = num;
@@ -35,6 +35,8 @@ public class RSStatistics implements Statistics {
         builder.append("std dev fitness: " + std + "\n");
         builder.append("most fit genome: \n");
         builder.append(gen.toString());
+        builder.append("as a phenotype: \n");
+        builder.append(phn.toString());
         
         return builder.toString();
     }
