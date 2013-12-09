@@ -156,10 +156,15 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         // select substitution/factorization
         int subfac = (int)(Math.random() * 2);
         
-        // select which rule to substitute/factorize
-        int rulen = (int)(Math.random() * rules.size() - 1) + subfac;
+        if (rules.size() < 2) {
+            // can't substitute
+            subfac = 0;
+        }
         
         if (subfac == 0) { // factorization
+            // select which rule to factorize
+            int rulen = (int)(Math.random() * rules.size());
+            
             // select random contiguous sequence
             int modpos = (int)(Math.random() * rules.get(rulen).rhs.getElements().size());
             int modsize = poisson(3, Math.random() * 0.6 + 0.4);
@@ -198,6 +203,9 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             // store newly formed rule
             rules.add(new Rule(abs, newrule));
         } else { // substitution
+            // select rule to substitute
+            int rulen = (int)(Math.random() * rules.size() - 1); // any nonzero
+            
             // find abstract symbol preceding this lhs, removing this lhs from hierarchy
             AbstractModule prec = null;
             for (int i = 0; i < hierarchy.size(); i++) {

@@ -56,7 +56,7 @@ public class Sequence<E> {
      * @return
      */
     public Sequence subsequence(int begin, int end) {
-        return new Sequence((ArrayList<E>)elements.subList(begin, end));
+        return new Sequence(new ArrayList<E>(elements.subList(begin, end)));
     }
     
     public boolean equals(Sequence s) {
@@ -153,7 +153,7 @@ public class Sequence<E> {
         }
         
         // retrieve removed elements
-        Sequence s = new Sequence((ArrayList<E>)elements.subList(i, i + n));
+        Sequence s = new Sequence(new ArrayList<E>(elements.subList(i, i + n)));
         
         // remove elements
         for (int x = 0; x < n; x++) {
