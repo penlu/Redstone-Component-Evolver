@@ -54,7 +54,7 @@ public class RSEvaluation implements Evaluation<RSPhenotype> {
             
             // start comparing outputs to expected outputs; score a point per correct answer per step
             int points = 0;
-            for (int s = 0; s < 5; s++) {
+            for (int s = 0; s < 20; s++) {
                 // get outputs
                 int[] out = sim.outputs();
                 

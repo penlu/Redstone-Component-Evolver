@@ -38,12 +38,18 @@ public class Rule {
             return;
         }
         
-        // find and replace matches
+        // make list of matches
+        ArrayList<Integer> matches = new ArrayList<Integer>();
         for (int i = 0; i < s.getElements().size(); i++) {
             if (s.getElements().get(i).equals(lhs)) {
-                s.remove(i, 1);
-                s.insert(rhs, i);
+                matches.add(i);
             }
+        }
+        
+        // replace matches, going backwards so as not to disrupt indices
+        for (int i = matches.size() - 1; i >= 0; i--) {
+            s.remove(matches.get(i), 1);
+            s.insert(rhs, matches.get(i));
         }
     }
     

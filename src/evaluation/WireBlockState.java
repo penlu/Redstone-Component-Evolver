@@ -20,6 +20,8 @@ public class WireBlockState implements BlockState {
 
     public WireBlockState(Block b) {
         block = b;
+        level = 0;
+        connections = new boolean[6];
     }
 
     public Block block() {

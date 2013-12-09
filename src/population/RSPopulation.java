@@ -10,6 +10,8 @@ import evaluation.RSEvaluation;
 import evolver.RSPhenotype;
 import genome.RSLGenome;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import statistics.RSStatistics;
 
 /**
@@ -69,10 +71,19 @@ public class RSPopulation implements Population<RSStatistics> {
     }
     
     public void generation() {
-        // reevaluate
+        // reevaluate like ten times per
         for (int i = 0; i < population.size(); i++) {
-            population.get(i).reevaluate();
+            for (int n = 0; n < 10; n++) {
+                population.get(i).reevaluate();
+            }
         }
+        
+        // resort
+        Collections.sort(population, new Comparator<Candidate>() {
+            public int compare(Candidate a, Candidate b) {
+                return (int)Math.signum(b.fitness - a.fitness);
+            }
+        });
         
         // take out three worst
         for (int i = 0; i < 3; i++) {
@@ -91,19 +102,7 @@ public class RSPopulation implements Population<RSStatistics> {
             mut.mutate();
             Candidate c = new Candidate(mut);
             
-            // add at proper location to maintain sorted
-            boolean inserted = false;
-            for (int j = 0; j < population.size(); j++) {
-                if (c.fitness >= population.get(j).fitness) {
-                    population.add(j, c);
-                    inserted = true;
-                    break;
-                }
-            }
-            // add at end if not added (this genome is really bad)
-            if (!inserted) {
-                population.add(c);
-            }
+            population.add(c);
         }
     }
     

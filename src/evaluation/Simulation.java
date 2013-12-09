@@ -179,8 +179,7 @@ public class Simulation {
             for (int dir = 0; dir < 5; dir++) {
                 Coord adj = loc.sub(new Coord(dir));
                 BlockState neighbor = world.getBlock(adj);
-                int pow = Math.max(neighbor.weakPower(dir),
-                                   neighbor.strongPower(dir));
+                int pow = Math.max(neighbor.weakPower(dir), neighbor.strongPower(dir));
                 if (pow > maxpow) {
                     maxpow = pow;
                 }

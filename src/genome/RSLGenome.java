@@ -184,7 +184,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             
             // select random contiguous sequence
             int modpos = (int)(Math.random() * rules.get(rulen).rhs.getElements().size());
-            int modsize = poisson(3, Math.random() * 0.6 + 0.4);
+            int modsize = poisson(rules.get(rulen).rhs.getElements().size() / 3, Math.random());
             
             // produce new abstract module for new rule lhs
             AbstractModule abs = new AbstractModule(hierarchy);
