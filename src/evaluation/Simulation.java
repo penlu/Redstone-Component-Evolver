@@ -23,7 +23,10 @@ public class Simulation {
     /**
      * @return a BlockState that can be used to simulate this object
      */
-    public static BlockState produceState(Block b) {
+    private static BlockState produceState(Block b) {
+        if (b == null) { // null spaces are air
+            return new AirBlockState(new Block(Block.BlockID.AIR, 0));
+        }
         switch (b.id) {
             case AIR:
                 return new AirBlockState(b);
@@ -34,7 +37,7 @@ public class Simulation {
             case BLOCK:
                 return new BlockBlockState(b);
             default:
-                return null;
+                return new AirBlockState(new Block(Block.BlockID.AIR, 0));
         }
     }
     
@@ -68,8 +71,7 @@ public class Simulation {
                     state[i][j][k] = produceState(p.getBlock(loc));
                     
                     // schedule components
-                    if (Block.BlockID.isSchedulable(
-                            p.getBlock(loc).id)) {
+                    if (Block.BlockID.isSchedulable(state[i][j][k].block().id)) {
                         scheduled.add(loc);
                     }
                 }
@@ -80,6 +82,7 @@ public class Simulation {
         ArrayList<Coord> inputs = p.getInputs();
         
         // make inputblocks that radiate weak power in all directions
+        inputblocks = new ArrayList<InputBlockState>();
         for (int i = 0; i < inputs.size(); i++) {
             Coord inloc = inputs.get(i);
             InputBlockState in = new InputBlockState();
@@ -112,7 +115,7 @@ public class Simulation {
      * @param c 
      */
     private void propagate(Coord c) {
-        if (Block.BlockID.isSchedulable(phenotype.getBlock(c).id)) {
+        if (Block.BlockID.isSchedulable(world.getBlock(c).block().id)) {
             scheduled.add(c);
             
             // remove duplicate update schedules
