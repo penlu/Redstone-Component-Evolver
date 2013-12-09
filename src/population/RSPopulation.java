@@ -85,8 +85,8 @@ public class RSPopulation implements Population<RSStatistics> {
             }
         });
         
-        // ten random swaps?
-        for (int i = 0; i < population.size() / 10; i++) {
+        // 25 random swaps?
+        for (int i = 0; i < population.size() / 4; i++) {
             int a = (int)(Math.random() * population.size());
             int b = (int)(Math.random() * population.size());
             Collections.swap(population, a, b);
@@ -97,10 +97,10 @@ public class RSPopulation implements Population<RSStatistics> {
             population.remove(population.size() - 1);
         }
         
-        // select from remaining population
+        // select from top half of remaining population
         ArrayList<RSLGenome> selections = new ArrayList<RSLGenome>();
         for (int i = 0; i < 3; i++) {
-            selections.add(population.get((int)(Math.random() * population.size())).genome);
+            selections.add(population.get((int)((Math.random() + 1) * population.size() / 2)).genome);
         }
         
         // add back with mutations

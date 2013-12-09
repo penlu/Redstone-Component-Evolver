@@ -173,14 +173,14 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
 
     private void doSubFac() {
         // select substitution/factorization
-        int subfac = (int)(Math.random() * 2);
+        double subfac = Math.random();
         
         if (rules.size() < 2) {
             // can't substitute
             subfac = 0;
         }
         
-        if (subfac == 0) { // factorization
+        if (subfac < 0.5) { // factorization
             // select which rule to factorize
             int rulen = (int)(Math.random() * rules.size());
             
