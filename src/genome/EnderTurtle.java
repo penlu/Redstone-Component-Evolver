@@ -124,21 +124,18 @@ public class EnderTurtle {
      * @return 
      */
     public static Module randomConcreteModule() {
-        int choice = (int)(Math.random() * 5);
-        switch (choice) {
-            case 0:
-                return new BlockModule(Block.randomBlock(), (int)(Math.random() * 6));
-            case 1:
-                return new PushModule();
-            case 2:
-                return new PopModule();
-            case 3:
-                return new InputModule();
-            case 4:
-                return new OutputModule();
+        double choice = Math.random();
+        if (choice < 0.5) {
+            return new BlockModule(Block.randomBlock(), (int)(Math.random() * 6));
+        } else if (choice < 0.7) {
+            return new PushModule();
+        } else if (choice < 0.9) {
+            return new PopModule();
+        } else if (choice < 0.95) {
+            return new PushModule();
+        } else {
+            return new PopModule();
         }
-        
-        return null; // something is wrong if you have reached this
     }
 
     /**

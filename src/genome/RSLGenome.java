@@ -96,7 +96,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         for (int i = 0; i < rules.size(); i++) {
             Rule copy = rules.get(i).copy();
             
-            // repair abstract symbols in copied rules to new hierarchy
+            // repair abstract symbols in copied rules to new hierarchy TODO seems buggy
             
             // find every abstract symbol
             for (int s = 0; s < hierarchy.size(); s++) {
@@ -245,30 +245,13 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         
         switch (modchoice) {
             case 0: // insertion
-                // location: random quantity leq length
+                // location: random quantity less than or equal to length
                 int insertloc = (int)(Math.random() * rule.rhs.getElements().size() + 1);
-                
-                // make list of insertable symbols
-                ArrayList<Module> syms = new ArrayList<Module>(); // concrete symbols and symbols less abstract than LHS
-                syms.add(null);
-                boolean encountered = false;
-                for (int i = 0; i < hierarchy.size(); i++) {
-                    if (encountered) {
-                        syms.add(hierarchy.get(i));
-                    } else if (hierarchy.get(i) == rule.lhs) {
-                        encountered = true;
-                    }
-                }
                 
                 // generate random sequence
                 Sequence<Module> seq = new Sequence<Module>();
                 for (int i = 0; i < modsize; i++) {
-                    Module mod = syms.get((int)(Math.random() * syms.size()));
-                    if (mod == null) {
-                        seq.insert(EnderTurtle.randomConcreteModule(), seq.getElements().size());
-                    } else {
-                        seq.insert(mod, seq.getElements().size());
-                    }
+                    seq.insert(EnderTurtle.randomConcreteModule(), seq.getElements().size());
                 }
                 
                 rule.rhs.insert(seq, insertloc);
