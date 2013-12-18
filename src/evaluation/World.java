@@ -75,7 +75,7 @@ public class World {
      * @param c
      * @return 
      */
-    public boolean isPowered(Coord c) { // torch-offing-torch quirk
+    public boolean isPowered(Coord c) { // TODO fix torch-offing-torch quirk
         return weakPowerInput(c) > 0 || strongPowerInput(c) > 0;
     }
 }

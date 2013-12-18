@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
     ArrayList<Rule> rules; // list of rules
     ArrayList<AbstractModule> hierarchy; // abstraction hierarchy, decreasing order of abstraction
+    // TODO overhaul abstract symbol/rule hierarchy tracking methods?
     
     /**
      * Factorial for Poisson distribution generator
@@ -99,7 +100,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
             Rule copy = rules.get(i).copy();
             
             // repair abstract symbols in copied rules to new hierarchy
-            // BUG abstract symbols translation rules occasionally refer to higher or self abstraction levels
+            // TODO bug: abstract symbols translation rules occasionally refer to higher or self abstraction levels
             
             // find every abstract symbol
             for (int s = 0; s < hierarchy.size(); s++) {
@@ -174,7 +175,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         }
     }
 
-    private void doSubFac() {
+    private void doSubFac() { // TODO possible abstraction hierarchy violation bug
         // select substitution/factorization
         double subfac = Math.random();
         
@@ -241,6 +242,7 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
 
     private void mutateRule(Rule rule) {
         // select size of modification
+        // TODO don't permit edge runoff
         int modsize = poisson(1, Math.random() / 2 + 0.5);
         
         // select type of modification
@@ -280,5 +282,10 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         }
         
         return out.toString();
+    }
+    
+    public RSLGenome crossover(RSLGenome g) {
+        // TODO
+        return copy();
     }
 }
