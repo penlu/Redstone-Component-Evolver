@@ -8,6 +8,8 @@ import evolver.RSPhenotype;
 import genome.EnderTurtle.AbstractModule;
 import java.util.ArrayList;
 
+// TODO support tracing lineage
+// TODO support crossovers
 /**
  * Contains methods for a genotype representation.
  * 
@@ -96,7 +98,8 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
         for (int i = 0; i < rules.size(); i++) {
             Rule copy = rules.get(i).copy();
             
-            // repair abstract symbols in copied rules to new hierarchy TODO seems buggy
+            // repair abstract symbols in copied rules to new hierarchy
+            // BUG abstract symbols translation rules occasionally refer to higher or self abstraction levels
             
             // find every abstract symbol
             for (int s = 0; s < hierarchy.size(); s++) {
@@ -253,6 +256,8 @@ public class RSLGenome implements Genome<RSLGenome, RSPhenotype> {
                 for (int i = 0; i < modsize; i++) {
                     seq.insert(EnderTurtle.randomConcreteModule(), seq.getElements().size());
                 }
+                
+                // TODO inserting abstract symbols
                 
                 rule.rhs.insert(seq, insertloc);
                 break;

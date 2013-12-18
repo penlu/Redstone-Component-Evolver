@@ -132,9 +132,9 @@ public class EnderTurtle {
         } else if (choice < 0.9) {
             return new PopModule();
         } else if (choice < 0.95) {
-            return new PushModule();
+            return new InputModule();
         } else {
-            return new PopModule();
+            return new OutputModule();
         }
     }
 

@@ -70,6 +70,7 @@ public class RSPopulation implements Population<RSStatistics> {
         }
     }
     
+    // TODO better population management system
     public void generation() {
         // reevaluate like ten times per
         for (int i = 0; i < population.size(); i++) {
@@ -85,31 +86,24 @@ public class RSPopulation implements Population<RSStatistics> {
             }
         });
         
-        // 25 random swaps?
-        for (int i = 0; i < population.size() / 4; i++) {
-            int a = (int)(Math.random() * population.size());
-            int b = (int)(Math.random() * population.size());
-            Collections.swap(population, a, b);
-        }
-        
         // take out three worst
         for (int i = 0; i < 3; i++) {
             population.remove(population.size() - 1);
         }
         
-        // select from top half of remaining population
+        // select reproducers from remaining population
         ArrayList<RSLGenome> selections = new ArrayList<RSLGenome>();
         for (int i = 0; i < 3; i++) {
-            selections.add(population.get((int)((Math.random() + 1) * population.size() / 2)).genome);
+            selections.add(population.get((int)(Math.random() * population.size())).genome);
         }
         
-        // add back with mutations
+        // mutate, then add back
         for (int i = 0; i < selections.size(); i++) {
             RSLGenome mut = selections.get(i).copy();
             mut.mutate();
             Candidate c = new Candidate(mut);
             
-            population.add(c);
+            population.add((int)(Math.random() * population.size()), c);
         }
     }
     

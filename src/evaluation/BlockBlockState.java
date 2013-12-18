@@ -10,8 +10,9 @@ import evolver.Block;
 import evolver.Coord;
 import java.util.ArrayList;
 
+// TODO correct torch/wire powering from strong power
 /**
- *
+ * Implements behavior for opaque blocks.
  * @author Eric Lu <penlume@gmail.com>
  */
 public class BlockBlockState implements BlockState {

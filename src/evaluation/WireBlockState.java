@@ -9,8 +9,9 @@ import evolver.Block.BlockID;
 import evolver.Coord;
 import java.util.ArrayList;
 
+// TODO correct behavior
 /**
- *
+ * Implements behavior for redstone wire.
  * @author Eric Lu <penlume@gmail.com>
  */
 public class WireBlockState implements BlockState {

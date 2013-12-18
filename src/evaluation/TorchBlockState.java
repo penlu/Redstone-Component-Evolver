@@ -8,8 +8,9 @@ import evolver.Block;
 import evolver.Coord;
 import java.util.ArrayList;
 
+// TODO correct powering
 /**
- *
+ * Implements redstone torch behavior.
  * @author Eric Lu <penlume@gmail.com>
  */
 public class TorchBlockState implements BlockState {
